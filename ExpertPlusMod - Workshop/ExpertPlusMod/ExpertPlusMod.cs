@@ -1,12 +1,9 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using GameDataEditor;
+﻿using GameDataEditor;
 using HarmonyLib;
 using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using DarkTonic.MasterAudio;
 using TileTypes;
 using System.Reflection.Emit;
 using System.Reflection;
@@ -468,156 +465,159 @@ namespace ExpertPlusMod
         }
 
         // Mana reduced by 1 per charcter dead. Cannot fall below 3. (start of turn)
-        [HarmonyPatch(typeof(BattleTeam))]
-        class ManaRemove_Patch
-        {
-            [HarmonyPatch(nameof(BattleTeam.MyTurn))]
-            [HarmonyPrefix]
-            static bool Prefix(BattleTeam __instance)
-            {
-                __instance.DummyCharAlly.Dummy = true;
-                foreach (BattleChar battleChar in __instance.AliveChars)
-                {
-                    battleChar.ActionCount = 1;
-                    battleChar.Overload = 0;
-                    battleChar.ActionNum = 0;
-                    battleChar.SkillUseDraw = false;
-                }
-                __instance.LucyAlly.ActionCount = 1;
-                __instance.LucyAlly.Overload = 0;
-                __instance.LucyAlly.ActionNum = 0;
-                __instance.UsedDeckToDeckNum = 0;
-                __instance.DiscardCount = __instance.GetDiscardCount;
-                __instance.WaitCount = 1 + PlayData.PartySpeed;
-                if (__instance.WaitCount >= 3)
-                {
-                    __instance.WaitCount = 3;
-                }
-                if (__instance.WaitCount <= 1)
-                {
-                    __instance.WaitCount = 1;
-                }
-                if (__instance.AliveChars.Find((BattleChar a) => a.Info.KeyData == GDEItemKeys.Character_LucyC) != null)
-                {
-                    __instance.WaitCount = 1;
-                }
-                // Here
-                int deadCount = BattleSystem.instance.AllyTeam.Chars.Count - BattleSystem.instance.AllyTeam.AliveChars.Count;
-                //Debug.Log("Dead count: "+deadCount);
-                if (StageSystem.instance.Map.StageData.Key != GDEItemKeys.Stage_Stage_Crimson) // Not Crimson
-                {
-                    if (__instance.MAXAP - deadCount > 3)
-                    {
-                        __instance.AP = __instance.MAXAP - deadCount;
-                    }
-                    else
-                    {
-                        __instance.AP = 3;
-                    }
-                }
-                else // Crimson
-                {
-                    __instance.AP = __instance.MAXAP;
-                }
-                __instance.TurnActionNum = 0;
-                List<BattleChar> list = new List<BattleChar>();
-                AccessTools.FieldRef<BattleTeam, List<BattleChar>> G_Ref = AccessTools.FieldRefAccess<List<BattleChar>>(typeof(BattleTeam), "G_AliveChars");
-                list.AddRange(G_Ref(__instance));
-                List<BattleChar.TickInfo> list2 = new List<BattleChar.TickInfo>();
-                for (int i = 0; i < list.Count; i++)
-                {
-                    list2.Add(list[i].TickDamageReturn());
-                }
-                for (int j = 0; j < list.Count; j++)
-                {
-                    List<Buff> list3 = new List<Buff>();
-                    list3.AddRange(list[j].Buffs);
-                    for (int k = 0; k < list3.Count; k++)
-                    {
-                        Buff buff = list3[k];
-                        list3[k].TurnUpdate();
-                        if (list3.Count == 0)
-                        {
-                            break;
-                        }
-                        if (k >= list3.Count)
-                        {
-                            k--;
-                        }
-                        else if (buff != list3[k])
-                        {
-                            k--;
-                        }
-                    }
-                }
-                for (int l = 0; l < list.Count; l++)
-                {
-                    list[l].TickUpdate(list2[l]);
-                }
-                foreach (BattleChar battleChar2 in list)
-                {
-                    battleChar2.BattleUpdate();
-                }
-                if (__instance.LucyChar.IsLucyNoC)
-                {
-                    __instance.LucyChar.TickUpdate(__instance.LucyChar.TickDamageReturn());
-                    __instance.LucyChar.BattleUpdate();
-                    List<Buff> list4 = new List<Buff>();
-                    list4.AddRange(__instance.LucyChar.Buffs);
-                    for (int m = 0; m < list4.Count; m++)
-                    {
-                        Buff buff2 = list4[m];
-                        list4[m].TurnUpdate();
-                        if (list4.Count == 0)
-                        {
-                            break;
-                        }
-                        if (m >= list4.Count)
-                        {
-                            m--;
-                        }
-                        else if (buff2 != list4[m])
-                        {
-                            m--;
-                        }
-                    }
-                }
-                AccessTools.FieldRef<BattleTeam, int> G2_Ref = AccessTools.FieldRefAccess<int>(typeof(BattleTeam), "G_AliveCharGetFrame");
-                G2_Ref(__instance) = 0;
-                int num = PlayData.GetDraw;
-                BattleSystem.instance.ActWindow.gameObject.SetActive(true);
-                if (BattleSystem.instance.TurnNum == 0)
-                {
-                    num = PlayData.GetDraw + __instance.AliveChars.Count;
-                    if (PlayData.TSavedata.SpRule != null)
-                    {
-                        num += PlayData.TSavedata.SpRule.RuleChange.PlusFirstTurnDraw;
-                    }
-                    List<Skill> list5 = new List<Skill>();
-                    list5.AddRange(__instance.Skills_Deck);
-                    foreach (Skill skill in list5)
-                    {
-                        foreach (Skill_Extended skill_Extended in skill.AllExtendeds)
-                        {
-                            skill_Extended.BattleStartDeck(__instance.Skills_Deck);
-                        }
-                    }
-                    foreach (IP_FirstDrawBefore ip_FirstDrawBefore in BattleSystem.instance.IReturn<IP_FirstDrawBefore>())
-                    {
-                        if (ip_FirstDrawBefore != null)
-                        {
-                            ip_FirstDrawBefore.FirstDrawBefore(__instance.Skills_Deck);
-                        }
-                    }
-                }
-                __instance.Draw(num);
-                for (int n = 0; n < __instance.Chars.Count; n++)
-                {
-                    __instance.BasicSkillRefill(__instance.Chars[n], __instance.Skills_Basic[n]);
-                }
-                return false;
-            }
-        }
+        //[HarmonyPatch(typeof(BattleTeam))]
+        //class ManaRemove_Patch
+        //{
+        //    [HarmonyPatch(nameof(BattleTeam.MyTurn))]
+        //    [HarmonyPrefix]
+        //    static bool Prefix(BattleTeam __instance)
+        //    {
+        //        __instance.DummyCharAlly.Dummy = true;
+        //        foreach (BattleChar battleChar in __instance.AliveChars)
+        //        {
+        //            battleChar.ActionCount = 1;
+        //            battleChar.Overload = 0;
+        //            battleChar.ActionNum = 0;
+        //            battleChar.SkillUseDraw = false;
+        //        }
+        //        __instance.LucyAlly.ActionCount = 1;
+        //        __instance.LucyAlly.Overload = 0;
+        //        __instance.LucyAlly.ActionNum = 0;
+        //        __instance.UsedDeckToDeckNum = 0;
+        //        __instance.DiscardCount = __instance.GetDiscardCount;
+        //        __instance.WaitCount = 1 + PlayData.PartySpeed;
+        //        if (__instance.WaitCount >= 3)
+        //        {
+        //            __instance.WaitCount = 3;
+        //        }
+        //        if (__instance.WaitCount <= 1)
+        //        {
+        //            __instance.WaitCount = 1;
+        //        }
+        //        if (__instance.AliveChars.Find((BattleChar a) => a.Info.KeyData == GDEItemKeys.Character_LucyC) != null)
+        //        {
+        //            __instance.WaitCount = 1;
+        //        }
+        //        // Here
+        //        if (StageSystem.instance.Map.StageData.Key != null && StageSystem.instance.Map.StageData.Key != GDEItemKeys.Stage_Stage_Crimson)
+        //        {
+        //            // nothing
+        //        }
+        //        else
+        //        {
+        //            int deadCount = BattleSystem.instance.AllyTeam.Chars.Count - BattleSystem.instance.AllyTeam.AliveChars.Count;
+        //            //Debug.Log("Dead count: "+deadCount);
+        //            if (StageSystem.instance.Map.StageData.Key != GDEItemKeys.Stage_Stage_Crimson) // Not Crimson
+        //            {
+        //                if (__instance.MAXAP - deadCount > 3)
+        //                {
+        //                    __instance.AP = __instance.MAXAP - deadCount;
+        //                }
+        //                else
+        //                {
+        //                    __instance.AP = 3;
+        //                }
+        //            }
+        //        }
+        //        __instance.TurnActionNum = 0;
+        //        List<BattleChar> list = new List<BattleChar>();
+        //        AccessTools.FieldRef<BattleTeam, List<BattleChar>> G_Ref = AccessTools.FieldRefAccess<List<BattleChar>>(typeof(BattleTeam), "G_AliveChars");
+        //        list.AddRange(G_Ref(__instance));
+        //        List<BattleChar.TickInfo> list2 = new List<BattleChar.TickInfo>();
+        //        for (int i = 0; i < list.Count; i++)
+        //        {
+        //            list2.Add(list[i].TickDamageReturn());
+        //        }
+        //        for (int j = 0; j < list.Count; j++)
+        //        {
+        //            List<Buff> list3 = new List<Buff>();
+        //            list3.AddRange(list[j].Buffs);
+        //            for (int k = 0; k < list3.Count; k++)
+        //            {
+        //                Buff buff = list3[k];
+        //                list3[k].TurnUpdate();
+        //                if (list3.Count == 0)
+        //                {
+        //                    break;
+        //                }
+        //                if (k >= list3.Count)
+        //                {
+        //                    k--;
+        //                }
+        //                else if (buff != list3[k])
+        //                {
+        //                    k--;
+        //                }
+        //            }
+        //        }
+        //        for (int l = 0; l < list.Count; l++)
+        //        {
+        //            list[l].TickUpdate(list2[l]);
+        //        }
+        //        foreach (BattleChar battleChar2 in list)
+        //        {
+        //            battleChar2.BattleUpdate();
+        //        }
+        //        if (__instance.LucyChar.IsLucyNoC)
+        //        {
+        //            __instance.LucyChar.TickUpdate(__instance.LucyChar.TickDamageReturn());
+        //            __instance.LucyChar.BattleUpdate();
+        //            List<Buff> list4 = new List<Buff>();
+        //            list4.AddRange(__instance.LucyChar.Buffs);
+        //            for (int m = 0; m < list4.Count; m++)
+        //            {
+        //                Buff buff2 = list4[m];
+        //                list4[m].TurnUpdate();
+        //                if (list4.Count == 0)
+        //                {
+        //                    break;
+        //                }
+        //                if (m >= list4.Count)
+        //                {
+        //                    m--;
+        //                }
+        //                else if (buff2 != list4[m])
+        //                {
+        //                    m--;
+        //                }
+        //            }
+        //        }
+        //        AccessTools.FieldRef<BattleTeam, int> G2_Ref = AccessTools.FieldRefAccess<int>(typeof(BattleTeam), "G_AliveCharGetFrame");
+        //        G2_Ref(__instance) = 0;
+        //        int num = PlayData.GetDraw;
+        //        BattleSystem.instance.ActWindow.gameObject.SetActive(true);
+        //        if (BattleSystem.instance.TurnNum == 0)
+        //        {
+        //            num = PlayData.GetDraw + __instance.AliveChars.Count;
+        //            if (PlayData.TSavedata.SpRule != null)
+        //            {
+        //                num += PlayData.TSavedata.SpRule.RuleChange.PlusFirstTurnDraw;
+        //            }
+        //            List<Skill> list5 = new List<Skill>();
+        //            list5.AddRange(__instance.Skills_Deck);
+        //            foreach (Skill skill in list5)
+        //            {
+        //                foreach (Skill_Extended skill_Extended in skill.AllExtendeds)
+        //                {
+        //                    skill_Extended.BattleStartDeck(__instance.Skills_Deck);
+        //                }
+        //            }
+        //            foreach (IP_FirstDrawBefore ip_FirstDrawBefore in BattleSystem.instance.IReturn<IP_FirstDrawBefore>())
+        //            {
+        //                if (ip_FirstDrawBefore != null)
+        //                {
+        //                    ip_FirstDrawBefore.FirstDrawBefore(__instance.Skills_Deck);
+        //                }
+        //            }
+        //        }
+        //        __instance.Draw(num);
+        //        for (int n = 0; n < __instance.Chars.Count; n++)
+        //        {
+        //            __instance.BasicSkillRefill(__instance.Chars[n], __instance.Skills_Basic[n]);
+        //        }
+        //        return false;
+        //    }
+        //}
 
         //[HarmonyPatch(typeof(BattleChar))]
         //class ManaRemove2_Patch

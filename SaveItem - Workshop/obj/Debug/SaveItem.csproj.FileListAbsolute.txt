@@ -1,0 +1,88 @@
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\0Harmony.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\Assembly-CSharp.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\BepInEx.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.AnimationModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.ParticleSystemModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.UIModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\Unity.ResourceManager.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\Unity.Addressables.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.Physics2DModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.AudioModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.PhysicsModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\spine-unity.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\Unity.Postprocessing.Runtime.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.IMGUIModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.TextRenderingModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.VideoModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.UnityAnalyticsModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\StovePCSDK.NET.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\DOTween.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.AssetBundleModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\Newtonsoft.Json.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.UnityWebRequestModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.PerformanceReportingModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.ImageConversionModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.VRModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.TerrainModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.UnityWebRequestAudioModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.TextCoreModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.SharedInternalsModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.JSONSerializeModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.UnityWebRequestAssetBundleModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.UnityWebRequestWWWModule.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\UnityEngine.XRModule.dll
+C:\Users\sjkim\source\repos\SaveItem\obj\Debug\SaveItem.csproj.AssemblyReference.cache
+C:\Users\sjkim\source\repos\SaveItem\obj\Debug\SaveItem.csproj.CoreCompileInputs.cache
+C:\Users\sjkim\source\repos\SaveItem\obj\Debug\SaveItem.csproj.CopyComplete
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\SaveItem.dll
+C:\Users\sjkim\source\repos\SaveItem\bin\Debug\SaveItem.pdb
+C:\Users\sjkim\source\repos\SaveItem\obj\Debug\SaveItem.dll
+C:\Users\sjkim\source\repos\SaveItem\obj\Debug\SaveItem.pdb
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\SaveItem.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\SaveItem.pdb
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\0Harmony.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Assembly-CSharp.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\BepInEx.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Mono.Cecil.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Mono.Cecil.Mdb.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Mono.Cecil.Pdb.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Mono.Cecil.Rocks.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\MonoMod.RuntimeDetour.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\MonoMod.Utils.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.AnimationModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.ParticleSystemModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.UIModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Unity.ResourceManager.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Unity.Addressables.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.Physics2DModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.AudioModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.PhysicsModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\spine-unity.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Unity.Postprocessing.Runtime.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.IMGUIModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.TextRenderingModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.VideoModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.UnityAnalyticsModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\StovePCSDK.NET.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\DOTween.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.AssetBundleModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\Newtonsoft.Json.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.UnityWebRequestModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.PerformanceReportingModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.ImageConversionModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.VRModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.TerrainModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.UnityWebRequestAudioModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.UnityWebRequestWWWModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.TextCoreModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.SharedInternalsModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.JSONSerializeModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.UnityWebRequestAssetBundleModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\bin\Debug\UnityEngine.XRModule.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\obj\Debug\SaveItem.csproj.AssemblyReference.cache
+C:\Users\sjkim\source\repos\SaveItem - Workshop\obj\Debug\SaveItem.csproj.CoreCompileInputs.cache
+C:\Users\sjkim\source\repos\SaveItem - Workshop\obj\Debug\SaveItem.csproj.CopyComplete
+C:\Users\sjkim\source\repos\SaveItem - Workshop\obj\Debug\SaveItem.dll
+C:\Users\sjkim\source\repos\SaveItem - Workshop\obj\Debug\SaveItem.pdb

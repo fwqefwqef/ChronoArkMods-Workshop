@@ -37,64 +37,51 @@ namespace FiveErrorMod
         }
 
         // modify 505Error
-        [HarmonyPatch(typeof(CharacterWindow))]
+        [HarmonyPatch(typeof(CharFace))]
         class Error_Patch
         {
-            [HarmonyPatch(nameof(CharacterWindow.GetRandomSkill))]
+            [HarmonyPatch(nameof(CharFace.GetRandomSkill))]
             [HarmonyPrefix]
-            static bool GetRandomSkill(CharacterWindow __instance, ref List<Skill> __result)
+            static bool GetRandomSkill(CharFace __instance, ref List<Skill> __result)
             {
-                //Debug.Log("I wuz here");
-                // Accounting for Relic that adds 4 choices instead of 3
-                int num;
-                if (PlayData.Passive.Find((Item_Passive passive) => passive.itemkey == GDEItemKeys.Item_Passive_OldRule) != null)
-                {
-                    num = 4;
-                }
-                else
-                {
-                    num = 3;
-                }
+                List<Skill> list = new List<Skill>();
+                Debug.Log("I wuz here");
 
                 List<GDESkillData> list2 = new List<GDESkillData>();
                 foreach (GDESkillData gdeskillData2 in PlayData.ALLSKILLLIST)
                 {
                     if (!ChaosMode)
                     {
-                        if (gdeskillData2.User != string.Empty && gdeskillData2.Category.Key != GDEItemKeys.SkillCategory_LucySkill && gdeskillData2.Category.Key != GDEItemKeys.SkillCategory_DefultSkill && !gdeskillData2.NoDrop && !gdeskillData2.Lock)
+                        if (gdeskillData2.User != "" && gdeskillData2.Category.Key != GDEItemKeys.SkillCategory_LucySkill && gdeskillData2.Category.Key != GDEItemKeys.SkillCategory_DefultSkill && gdeskillData2.User != GDEItemKeys.Character_LucyC && !gdeskillData2.NoDrop && !gdeskillData2.Lock)
                         {
                             GDECharacterData gdecharacterData = new GDECharacterData(gdeskillData2.User);
-                            if (!(gdeskillData2.KeyID == GDEItemKeys.Skill_S_Phoenix_6) && !(gdeskillData2.Key == GDEItemKeys.Skill_S_Phoenix_6))
+                            if (!(gdeskillData2.KeyID == GDEItemKeys.Skill_S_Phoenix_6) && !(gdeskillData2.Key == GDEItemKeys.Skill_S_Phoenix_6) && gdecharacterData != null)
                             {
-                                if (gdecharacterData != null)
+                                if (!gdecharacterData.Lock)
                                 {
-                                    if (!gdecharacterData.Lock)
-                                    {
-                                        list2.Add(gdeskillData2);
-                                    }
-                                    else if (SaveManager.IsUnlock(gdeskillData2.User, SaveManager.NowData.unlockList.UnlockCharacter))
-                                    {
-                                        list2.Add(gdeskillData2);
-                                    }
+                                    list2.Add(gdeskillData2);
+                                }
+                                else if (SaveManager.IsUnlock(gdeskillData2.User, SaveManager.NowData.unlockList.UnlockCharacter))
+                                {
+                                    list2.Add(gdeskillData2);
                                 }
                             }
                         }
                     }
-                    else //if Chaos Mode == true
+                    else
                     {
                         list2.Add(gdeskillData2);
                     }
                 }
-                
                 List<GDESkillData> list3 = new List<GDESkillData>();
                 List<Skill> list4 = new List<Skill>();
-                list3.AddRange(list2.Random(num));
+                list3.AddRange(list2.Random(RandomClassKey.AllSkill, 3));
                 foreach (GDESkillData gdeskillData3 in list3)
                 {
                     list4.Add(Skill.TempSkill(gdeskillData3.Key, __instance.AllyCharacter, __instance.AllyCharacter.MyTeam));
                 }
-                // returning list4 means that the original 3 skills won't be returned
-                __result = list4;
+                list.AddRange(list4);
+                __result = list;
                 return false;
             }
         }

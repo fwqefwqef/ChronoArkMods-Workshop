@@ -70,6 +70,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "C:\Users\sjkim\Desktop\Workshop\SteamWorkshopUploader_2\WorkshopContent\505ErrorMod\Assemblies"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "C:\Users\sjkim\Desktop\Chrono Ark\chrono ark modding\Workshop\SteamWorkshopUploader_2\WorkshopContent\505ErrorMod\Assemblies"</PostBuildEvent>
   </PropertyGroup>
 </Project>

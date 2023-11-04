@@ -49,7 +49,6 @@ C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\0Ha
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Assembly-CSharp.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\netstandard.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\System.Net.Http.dll
-C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.AnimationModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.ParticleSystemModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.UIModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Unity.ResourceManager.dll

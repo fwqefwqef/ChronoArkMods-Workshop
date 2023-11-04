@@ -307,7 +307,12 @@ namespace ExpertPlusMod
                             }
                             int num = (int)Misc.PerToNum((float)b.GetStat.maxhp, 200f);
                             b.Heal(b, (float)num, false);
-                        } 
+                        }
+
+                        foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
+                        {
+                            b.BuffRemove("B_DorchiX_0_T", true);
+                        }
                     }
                     
                     else if (__instance is B_Joker_P_0)

@@ -25,6 +25,7 @@ namespace ExpertPlusMod
         public static bool PermaMode = false;
         public static bool VanillaCurses = false;
         public static bool DespairMode = false;
+        public static bool CursedBosses = false;
 
         public override void Initialize()
         {
@@ -32,6 +33,7 @@ namespace ExpertPlusMod
             PermaMode = modInfo.GetSetting<ToggleSetting>("PermaMode").Value;
             VanillaCurses = modInfo.GetSetting<ToggleSetting>("VanillaCurses").Value;
             DespairMode = modInfo.GetSetting<ToggleSetting>("DespairMode").Value;
+            CursedBosses = modInfo.GetSetting<ToggleSetting>("CursedBosses").Value;
 
             this.harmony = new Harmony(base.GetGuid());
             this.harmony.PatchAll();
@@ -464,7 +466,87 @@ namespace ExpertPlusMod
             }
         }
 
-        // Mana reduced by 1 per charcter dead. Cannot fall below 3. (start of turn)
+        // Curses bosses, executioner banned. Cursed 
+        [HarmonyPatch(typeof(BattleSystem))]
+        class BattleSystem_Patch
+        {
+            [HarmonyPatch(nameof(BattleSystem.CreatEnemy))]
+            [HarmonyPrefix]
+            static bool CreatEnemyPrefix(BattleSystem __instance, string EnemyString, Vector3 Pos, bool CustomPos, ref BattleEnemy __result, bool Curse = false)
+            {
+                GDEEnemyData gdeenemyData = new GDEEnemyData(EnemyString);
+                GameObject gameObject = Misc.UIInst(__instance.G_Enemy);
+                gameObject.SetActive(true);
+                BattleEnemy component = gameObject.GetComponent<BattleEnemy>();
+                if (!SaveManager.NowData.unlockList.FoundMonster.Contains(gdeenemyData.Key))
+                {
+                    SaveManager.NowData.unlockList.FoundMonster.Add(gdeenemyData.Key);
+                }
+                component.init(gdeenemyData, __instance);
+                // Here
+                if (CursedBosses)
+                {
+                    if (gdeenemyData.Boss == true && gdeenemyData.Key == "S1_WitchBoss")
+                    {
+                        List<string> list = new List<string> { "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
+                        string curse = list.Random();
+                        Debug.Log("Boss curse: " + curse);
+                        component.BuffAdd(curse, component, false, 0, false, -1, false);
+                    }
+                    else if (gdeenemyData.Boss == true)
+                    {
+                        List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
+                        string curse = list.Random();
+                        Debug.Log("Boss curse: " + curse);
+                        component.BuffAdd(curse, component, false, 0, false, -1, false);
+                    }
+                }
+                // end of edit
+                if (Curse)
+                {
+                    List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_4", "B_CursedMob_5" };
+                    component.BuffAdd(list.Random(), component, false, 0, false, -1, false);
+                }
+                if (__instance.BossBattle && !component.Boss)
+                {
+                    Pos -= new Vector3(0f, 0f, 0.3f);
+                }
+                component.PosObject.transform.localPosition = Pos;
+                component.PosObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                component.CharObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                if (__instance.battlecamera.enabled)
+                {
+                    component.TargetLook();
+                }
+                component.UseCustomPos = CustomPos;
+                UnityEngine.Object.Instantiate<GameObject>(__instance.EnemyOut, component.PosObject.transform).transform.localPosition = new Vector3(0f, 0f, 0f);
+                foreach (IP_EnemyAwake ip_EnemyAwake in BattleSystem.instance.IReturn<IP_EnemyAwake>())
+                {
+                    if (ip_EnemyAwake != null)
+                    {
+                        ip_EnemyAwake.EnemyAwake(component);
+                    }
+                }
+                __result = component;
+                return false;
+            }
+        }
+
+        // The below function freezes the game in Azar fight. 
+
+        //[HarmonyPatch(typeof(BattleTeam))]
+        //class asdfasdf
+        //{
+        //    [HarmonyPatch(nameof(BattleTeam.MyTurn))]
+        //    [HarmonyPrefix]
+        //    static bool Prefix()
+        //    {
+        //        Debug.Log(StageSystem.instance.Map.StageData.Key);
+        //        return true;
+        //    }
+        //}
+
+        // Mana reduced by 1 per charcter. Cannot fall below 3. (start of turn)
         //[HarmonyPatch(typeof(BattleTeam))]
         //class ManaRemove_Patch
         //{
@@ -506,8 +588,8 @@ namespace ExpertPlusMod
         //        else
         //        {
         //            int deadCount = BattleSystem.instance.AllyTeam.Chars.Count - BattleSystem.instance.AllyTeam.AliveChars.Count;
-        //            //Debug.Log("Dead count: "+deadCount);
-        //            if (StageSystem.instance.Map.StageData.Key != GDEItemKeys.Stage_Stage_Crimson) // Not Crimson
+        //            Debug.Log("Dead count: " + deadCount);
+        //            if (StageSystem.instance.Map.StageData.Key != "Stage_Crimson") // Not Crimson
         //            {
         //                if (__instance.MAXAP - deadCount > 3)
         //                {
@@ -724,18 +806,39 @@ namespace ExpertPlusMod
                     __instance.PlusStat.RES_CC = __instance.PlusStat.RES_CC - 15f;
                     __instance.PlusStat.RES_DEBUFF = __instance.PlusStat.RES_DEBUFF - 15f;
                     __instance.PlusStat.RES_DOT = __instance.PlusStat.RES_DOT - 15f;
-                    //Remove extra action count but increase atk by +40%
+                    //Remove extra action count but increase atk by +40%  
                     //__instance.PlusPerStat.Damage = __instance.PlusPerStat.Damage + 40;
                     //__instance.BChar.Info.PlusActCount.Remove(1);
                 }
 
-                //Gold reward reduced to 0
+                //Gold reward reduced to 50
                 if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold) > 0)
                 {
                     ___Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Gold, 50));
                 }
 
                 // Drop uncommons on Bloody Park 2 as well. Item reward reworked. 
+
+                // Cursed Boss: Heroic or Legendary Equip
+                if ((__instance.BChar as BattleEnemy).Boss)
+                {
+                    ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold);
+                    ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse);
+                    Random rand = new Random();
+                    int a = rand.Next(1, 3); // 1-2
+                    __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul,3));
+                    if (a == 1)
+                    {
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
+                    }
+                    else
+                    {
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                        __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Consume_RedHammer));
+                    }
+                    return;
+                }
+
                 bool flag = false;
                 if (__instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S2_Horse || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S2_Pharos_Mage || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S2_PharosWitch || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S3_Fugitive || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S3_Pharos_Assassin || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S3_Deathbringer || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S3_Pharos_Tanker || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S3_SnowGiant_0 || __instance.BChar.Info.KeyData == GDEItemKeys.Enemy_S3_Pharos_HighPriest)
                 {
@@ -900,17 +1003,88 @@ namespace ExpertPlusMod
         /// </summary>
         /// 
 
-        // Despair Mode: Do not spawn Lifting Scroll in battle
+        // Despair Mode: Do not spawn Lifting Scroll in battle.
         [HarmonyPatch(typeof(B_CursedMob), "BattleStart")]
         class CursedStart_Patch
         {
             static bool Prefix(B_CursedMob __instance)
             {
+                Debug.Log("Stage Number: " + PlayData.TSavedata.StageNum);
+                // living armor and cerberus: spawn 1 cost decisive strike
+                if (CursedBosses && BattleSystem.instance.BossBattle && PlayData.TSavedata.StageNum == 0)
+                {
+                    Debug.Log("spawn");
+                    Skill s = Skill.TempSkill(GDEItemKeys.Skill_S_Lucy_25, BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam);
+                    s.AP = 2;
+                    BattleSystem.instance.AllyTeam.Add(s, true);
+                }
                 if (DespairMode)
                 {
                     return false;
                 }
                 return true;
+            }
+        }
+
+        // Make decisive strike work like it used to
+        [HarmonyPatch(typeof(S_Lucy_25), "Special_PointerEnter")]
+        class DecisivePatch
+        {
+            static bool Prefix(BattleChar Char)
+            {
+                if (Char is BattleEnemy)
+                {
+                    if ((Char as BattleEnemy).Boss)
+                    {
+                        if (40f >= Misc.NumToPer((float)Char.GetStat.maxhp, (float)Char.HP))
+                        {
+                            EffectView.TextOutSimple(Char, ScriptLocalization.CharText_Ilya.Kill);
+                        }
+                    }
+                    else if (100f >= Misc.NumToPer((float)Char.GetStat.maxhp, (float)Char.HP))
+                    {
+                        EffectView.TextOutSimple(Char, ScriptLocalization.CharText_Ilya.Kill);
+                    }
+                }
+                return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(S_Lucy_25), "DamageChange")]
+        class DecisivePatch2
+        {
+            static bool Prefix(Skill SkillD, BattleChar Target, int Damage, ref bool Cri, bool View, S_Lucy_25 __instance, ref int __result)
+            {
+                if (View)
+                {
+                    __result = Damage;
+                }
+                if (Target is BattleEnemy)
+                {
+                    if ((Target as BattleEnemy).Boss)
+                    {
+                        if (40f >= Misc.NumToPer((float)Target.GetStat.maxhp, (float)Target.HP))
+                        {
+                            Target.BuffRemove("B_DuelistWill");
+                            Target.BuffRemove("B_DuelistWill_0");
+                            Target.BuffRemove("B_LastResistance");
+                            Target.HPToZero();
+                            __result = 0;
+                            return false;
+                        }
+                    }
+                    else if (100f >= Misc.NumToPer((float)Target.GetStat.maxhp, (float)Target.HP))
+                    {
+                        Target.BuffRemove("B_DuelistWill");
+                        Target.BuffRemove("B_DuelistWill_0");
+                        Target.BuffRemove("B_LastResistance");
+                        Target.HPToZero();
+                        __result = 0;
+                        return false;
+                    }
+                }
+                __result = Damage;
+                return false;
             }
         }
 
@@ -923,7 +1097,6 @@ namespace ExpertPlusMod
             {
                 if (DespairMode)
                 {
-
                     if (BattleSystem.instance.TurnNum == 1)
                     {
                         for (int i = 0; i < 2; i++)
@@ -931,7 +1104,7 @@ namespace ExpertPlusMod
                             BattleSystem.instance.AllyTeam.Add(Skill.TempSkill(GDEItemKeys.Skill_S_Sniper_1, BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam), true);
                         }
                         // Crimson Boss Fight
-                        if (!BattleSystem.instance.CurseBattle)
+                        if (BattleSystem.instance.MainQueueData.Wave2Turn == 4)
                         {
                             Skill s = Skill.TempSkill(GDEItemKeys.Skill_S_Lucy_25, BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam);
                             s.AP = -1;
@@ -1182,6 +1355,39 @@ namespace ExpertPlusMod
         /// Below is Neo's Stuff
         /// </summary>
 
+        // Cursed Bosses: Parade tank cant double kaboom
+
+        [HarmonyPatch(typeof(AI_MBoss2_0_0))]
+        class Paradetank_patch
+        {
+            [HarmonyPatch(nameof(AI_MBoss2_0_0.SkillSelect))]
+            [HarmonyPrefix]
+            static bool Prefix(AI_MBoss2_0_0 __instance, ref Skill __result)
+            {
+                if (CursedBosses)
+                {
+                    if (__instance.FirstTurn)
+                    {
+                        __result = __instance.BChar.Skills[0];
+                    }
+                    else if (__instance.Ready >= 2)
+                    {
+                        __result = __instance.BChar.Skills[0];
+                        __instance.Ready = 0;
+                    }
+                    else if (__instance.Ready >= 1)
+                    {
+                        __result = __instance.BChar.Skills[2];
+                    }
+                    else
+                    {
+                        __result = __instance.BChar.Skills[1];
+                    }
+                    return false;
+                }
+                return true;
+            }
+        }
 
         //Every Fight is Cursed
         // Fisher–Yates shuffle
@@ -1425,7 +1631,6 @@ namespace ExpertPlusMod
             [HarmonyPrefix]
             static bool Prefix(CampUI __instance, Camp Sc)
             {
-                //Debug.Log("Camphere");
                 __instance.MainCampScript = Sc;
                 if (!__instance.MainCampScript.Healed)
                 {
@@ -1433,8 +1638,7 @@ namespace ExpertPlusMod
                     foreach (Character character in PlayData.TSavedata.Party)
                     {
                         bool flag = false;
-                        // Here!!!!!!!!!!
-                        if (character.Incapacitated && !PermaMode)
+                        if (character.Incapacitated && !PermaMode) //Here 1 line changed
                         {
                             character.Incapacitated = false;
                             character.Hp = 1;
@@ -1523,6 +1727,7 @@ namespace ExpertPlusMod
                             }
                         }
                         __instance.Button_AddParty.gameObject.SetActive(true);
+                        PlayData.TSavedata.NowMaxMemberNum++;
                     }
                     else
                     {
@@ -1539,9 +1744,6 @@ namespace ExpertPlusMod
                 {
                     __instance.Button_AddParty.gameObject.SetActive(false);
                 }
-                __instance.VerticalLayout.enabled = false;
-                __instance.VerticalLayout.SetLayoutVertical();
-                __instance.VerticalLayout.enabled = true;
                 if (PlayData.TSavedata.Party.Find((Character a) => a.GetData.Key == GDEItemKeys.Character_Leryn) != null)
                 {
                     __instance.Button_LerynPassive.gameObject.SetActive(true);
@@ -1564,7 +1766,7 @@ namespace ExpertPlusMod
                                 {
                                     __instance.BloodyMistLockObj.SetActive(true);
                                     __instance.BloodyMistParticle.SetActive(false);
-                                    __instance.Button_BloodyMist.interactable = false;
+                                    __instance.Button_BloodyMist.SetActive(false);
                                     __instance.Button_BloodyMist.GetComponent<SimpleTooltip>().enabled = false;
                                 }
                             }
@@ -1586,6 +1788,10 @@ namespace ExpertPlusMod
                     if (PlayData.TSavedata.bMist != null)
                     {
                         tooltipString = list[PlayData.TSavedata.bMist.Level - 1];
+                        if (PlayData.TSavedata.bMist.BeforeClearCampUI)
+                        {
+                            __instance.BloodyMistButton();
+                        }
                     }
                     __instance.Button_BloodyMist.GetComponent<SimpleTooltip>().TooltipString = tooltipString;
                 }
@@ -1594,6 +1800,12 @@ namespace ExpertPlusMod
                     active = false;
                 }
                 __instance.Button_BloodyMist.gameObject.SetActive(active);
+                if (GamepadManager.IsPad) // not sure if this works
+                {
+                    MethodInfo methodInfo = typeof(CampUI).GetMethod("Co_Delay2", BindingFlags.NonPublic | BindingFlags.Instance);
+                    var parameters = new object[] { };
+                    ((MonoBehaviour)__instance).StartCoroutine((IEnumerator)methodInfo.Invoke(__instance, parameters));
+                }
                 return false;
             }
         }
@@ -1627,6 +1839,10 @@ namespace ExpertPlusMod
                 {
                     cleartext += "\n+Vanilla Curses";
                 }
+                if (CursedBosses)
+                {
+                    cleartext += "\n+Cursed Bosses";
+                }
                 __instance.BloodyMistText.text = cleartext;
                 List<string> list2 = new List<string>();
                 string text = "";
@@ -1641,6 +1857,10 @@ namespace ExpertPlusMod
                 if (VanillaCurses)
                 {
                     list2.Add("<b>Vanilla Curses</b>\nReverts the nerfs to Cursed Mob stats.\n");
+                }
+                if (CursedBosses)
+                {
+                    list2.Add("<b>Cursed Bosses</b>\nCurses bosses.\n");
                 }
                 for (int l = 0; l < list2.Count; l++)
                 {

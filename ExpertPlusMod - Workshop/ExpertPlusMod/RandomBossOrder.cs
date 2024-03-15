@@ -297,15 +297,19 @@ namespace ExpertPlusMod
 
                     else if (__instance is P_DorchiX)
                     {
-                        //Revive, heal everyone by 200% (66%)
+                        //Revive, heal everyone by 400% (100%)
                         foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
                         {
                             if (b.Info.Incapacitated)
                             {
                                 b.Info.Incapacitated = false;
                                 b.HP = 1;
+                                // Experimental
+                                BattleSystem.instance.AllyTeam.Skills_Deck.AddRange(Skill.CharToSkills(b, BattleSystem.instance.AllyTeam));
+                                b.MyTeam.ShuffleDeck();
+                                Debug.Log("Added skills of " + b.Info.Name+", shuffled deck");
                             }
-                            int num = (int)Misc.PerToNum((float)b.GetStat.maxhp, 200f);
+                            int num = (int)Misc.PerToNum((float)b.GetStat.maxhp, 400f);
                             b.Heal(b, (float)num, false);
                         }
 
@@ -337,7 +341,22 @@ namespace ExpertPlusMod
                         // Remove cleanse
                         RemoveCards("Extended_S2_MainBoss_1_Lucy_0");
                     }
-                    
+
+                    else if (__instance is B_S2_Tank_P)
+                    {
+                        // Kill minion
+                        using (List<BattleEnemy>.Enumerator enumerator2 = BattleSystem.instance.EnemyList.GetEnumerator())
+                        {
+                            while (enumerator2.MoveNext())
+                            {
+                                BattleEnemy battleEnemy3 = enumerator2.Current;
+                                battleEnemy3.Info.Hp = 0;
+                                battleEnemy3.Dead(false, false);
+                            }
+                            return;
+                        }
+                    }
+
                     else if (__instance is P_BombClown_0)
                     {
                         // Remove time bombs

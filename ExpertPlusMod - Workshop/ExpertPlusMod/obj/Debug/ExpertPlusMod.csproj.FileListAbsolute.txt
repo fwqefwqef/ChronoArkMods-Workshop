@@ -87,7 +87,6 @@ C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\obj\Debug\Exp
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\obj\Debug\ExpertPlusMod.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\obj\Debug\ExpertPlusMod.pdb
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Assembly-CSharp-firstpass.dll
-C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Beardy.BeardsGridLayoutGroup.Runtime.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Mono.Security.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Unity.Addressables.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Unity.TextMeshPro.dll
@@ -126,3 +125,4 @@ C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Uni
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.ARModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.CrashReportingModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\System.ServiceModel.Internals.dll
+C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.AnimationModule.dll

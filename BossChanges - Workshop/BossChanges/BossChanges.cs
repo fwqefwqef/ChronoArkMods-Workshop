@@ -1,17 +1,15 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using GameDataEditor;
+﻿using GameDataEditor;
 using HarmonyLib;
 using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using DarkTonic.MasterAudio;
 using TileTypes;
 using System.Reflection.Emit;
 using System.Reflection;
 using I2.Loc;
 using System.Collections;
+using DarkTonic.MasterAudio;
 using ChronoArkMod;
 using ChronoArkMod.ModData;
 using ChronoArkMod.ModData.Settings;
@@ -24,19 +22,27 @@ namespace BossChanges
     {
         public const string GUID = "windy.bosschanges";
         public const string version = "1.0.0";
+        public static bool EnableBossChanges = true;
 
         private Harmony harmony;
 
 
         public override void Initialize()
         {
-
+            ModInfo modInfo = ModManager.getModInfo("ExpertPlusMod");
+            EnableBossChanges = modInfo.GetSetting<ToggleSetting>("EnableBossChanges").Value;
             this.harmony = new Harmony(base.GetGuid());
-            this.harmony.PatchAll();
+            if (EnableBossChanges)
+            {
+                this.harmony.PatchAll();
+            }
         }
         public override void Dispose()
         {
-            this.harmony.UnpatchSelf();
+            if (EnableBossChanges)
+            {
+                this.harmony.UnpatchSelf();
+            }
         }
 
         // Modify gdata.json
@@ -182,22 +188,22 @@ namespace BossChanges
                             (masterJson[e.Key] as Dictionary<string, object>)["TagPer"] = 100;
                         }
 
-                        if (e.Key == "S_Joker_2")
-                        {
-                            (masterJson[e.Key] as Dictionary<string, object>)["Target"] = "enemy";
-                            (masterJson[e.Key] as Dictionary<string, object>)["Particle"] = "Particle/Enemy/Reaper_3";
-                        }
+                        //if (e.Key == "S_Joker_2")
+                        //{
+                        //    (masterJson[e.Key] as Dictionary<string, object>)["Target"] = "enemy";
+                        //    (masterJson[e.Key] as Dictionary<string, object>)["Particle"] = "Particle/Enemy/Reaper_3";
+                        //}
 
-                        if (e.Key == "SE_Joker_2_T")
-                        {
-                            List<string> a = new List<string>();
-                            a.Add("B_Common_Rest");
-                            (masterJson[e.Key] as Dictionary<string, object>)["Buffs"] = a;
+                        //if (e.Key == "SE_Joker_2_T")
+                        //{
+                        //    List<string> a = new List<string>();
+                        //    a.Add("B_Common_Rest");
+                        //    (masterJson[e.Key] as Dictionary<string, object>)["Buffs"] = a;
 
-                            List<int> b = new List<int>();
-                            b.Add(999);
-                            (masterJson[e.Key] as Dictionary<string, object>)["BuffPlusTagPer"] = b;
-                        }
+                        //    List<int> b = new List<int>();
+                        //    b.Add(999);
+                        //    (masterJson[e.Key] as Dictionary<string, object>)["BuffPlusTagPer"] = b;
+                        //}
 
                         //Bomber Clown Fight: Added 3 damage balloons
                         if (e.Key == "Queue_S2_BombClown")
@@ -243,13 +249,13 @@ namespace BossChanges
                         //    (masterJson[e.Key] as Dictionary<string, object>)["SkillExtended"] = a;
                         //    //Debug.Log("Updated Breathtaker");
                         //}
-                        if (e.Key == "S_Boss_Reaper_0")
-                        {
-                            List<string> a = new List<string>();
-                            a.Add("Extended_Hein_5");
-                            (masterJson[e.Key] as Dictionary<string, object>)["SkillExtended"] = a;
-                            Debug.Log("Reloaded");
-                        }
+                        //if (e.Key == "S_Boss_Reaper_0")
+                        //{
+                        //    List<string> a = new List<string>();
+                        //    a.Add("Extended_Hein_5");
+                        //    (masterJson[e.Key] as Dictionary<string, object>)["SkillExtended"] = a;
+                        //    Debug.Log("Reloaded");
+                        //}
                         // Death Sentence: Applies Healing Reduction
                         if (e.Key == "SE_Boss_Reaper_0_PlusHit_T")
                         {
@@ -555,6 +561,19 @@ namespace BossChanges
                 {
                     BattleSystem.DelayInput(BattleText.InstBattleText_Co(__instance.BChar, ScriptLocalization.CharText_Enemy_Joker.Talk_3, false, 0, 0f));
                 }
+                return false;
+            }
+        }
+
+        // Joker Summon gains taunt
+        [HarmonyPatch(typeof(SkillExtended_Joker_2))]
+        class JokerSummon_Patch
+        {
+            [HarmonyPatch(nameof(SkillExtended_Joker_2.SkillUseSingle))]
+            [HarmonyPrefix]
+            static bool Prefix()
+            {
+                BattleSystem.DelayInput(BattleSystem.instance.NewEnemyAutoPos("S2_Pierrot_Bat2", null));
                 return false;
             }
         }
@@ -875,12 +894,12 @@ namespace BossChanges
             [HarmonyPostfix]
             static void Postfix(B_Reaper_3 __instance)
             {
-                __instance.PlusPerStat.MaxHP = 0;
+                //__instance.PlusPerStat.MaxHP = 0;
                 __instance.PlusPerStat.Damage = (__instance.StackNum - 1) * 15;
             }
         }
 
-        // Reaper follower buff: remove health negative
+        // Strange Idea
         [HarmonyPatch(typeof(B_S3_Pope_1_T))]
         class StrangeIdeaPatch
         {
@@ -900,20 +919,72 @@ namespace BossChanges
             }
         }
 
-        [HarmonyPatch(typeof(Buff))]
-        class StrangeIdeaDesc_Patch
-        {
+        public static int reaperCount = 0;
 
-            [HarmonyPatch(nameof(Buff.DescExtended), new Type[] { })]
+        [HarmonyPatch(typeof(Buff))]
+        class ReaperStart
+        {
+            [HarmonyPatch(nameof(Buff.Init))]
             [HarmonyPostfix]
-            static void DescExtendedPostfix(ref string __result, Buff __instance)
+            static void Postfix(Buff __instance)
             {
-                if (__instance is B_S3_Pope_1_T)
+                if (__instance is B_Enemy_Boss_Reaper_P)
                 {
-                    __result = "Take <color=purple>6 Pain damage</color> for each skill this character has in hand.";
+                    reaperCount = 0;
+                    Debug.Log("Buff Init Reaper");
                 }
             }
         }
+
+        // Reaper AI : Change summon types
+        [HarmonyPatch(typeof(SkillExtended_Reaper_3))]
+        class ReaperSummonPatch
+        {
+            [HarmonyPatch(nameof(SkillExtended_Reaper_3.SkillUseSingle))]
+            [HarmonyPrefix]
+            static bool Prefix(SkillExtended_Reaper_3 __instance)
+            {
+                switch (reaperCount % 3)
+                {
+                    case 0:
+                        BattleSystem.instance.StartCoroutine(BattleSystem.instance.NewEnemyAutoPos(GDEItemKeys.Enemy_S3_Fugitive, null));
+                        if (__instance.BChar is BattleEnemy && (__instance.BChar as BattleEnemy).istaunt)
+                        {
+                            __instance.BChar.BuffScriptReturn("Common_Buff_EnemyTaunt").SelfDestroy(false);
+                        }
+                        break;
+                    case 1:
+                        BattleSystem.instance.StartCoroutine(BattleSystem.instance.NewEnemyAutoPos(GDEItemKeys.Enemy_S3_Deathbringer, null));
+                        if (__instance.BChar is BattleEnemy && (__instance.BChar as BattleEnemy).istaunt)
+                        {
+                            __instance.BChar.BuffScriptReturn("Common_Buff_EnemyTaunt").SelfDestroy(false);
+                        }
+                        break;
+                    case 2:
+                        BattleSystem.instance.StartCoroutine(BattleSystem.instance.NewEnemyAutoPos(GDEItemKeys.Enemy_S3_Pharos_HighPriest, null));
+                        __instance.BChar.BuffAdd(GDEItemKeys.Buff_B_EnemyTaunt, __instance.BChar, false, 0, false, -1, false);
+                        break;
+                    default:
+                        return false;
+                }
+                return false;
+            }
+        }
+
+        //[HarmonyPatch(typeof(Buff))]
+        //class StrangeIdeaDesc_Patch
+        //{
+
+        //    [HarmonyPatch(nameof(Buff.DescExtended), new Type[] { })]
+        //    [HarmonyPostfix]
+        //    static void DescExtendedPostfix(ref string __result, Buff __instance)
+        //    {
+        //        if (__instance is B_S3_Pope_1_T)
+        //        {
+        //            __result = "Take <color=purple>6 Pain damage</color> for each skill this character has in hand.";
+        //        }
+        //    }
+        //}
 
         //Joker Card: Increased Damage
         [HarmonyPatch(typeof(SKillExtedned_Joker_0_Effect))]
@@ -943,43 +1014,43 @@ namespace BossChanges
             }
         }
 
-        //Change Joker Card Desc
-        [HarmonyPatch(typeof(Skill_Extended))]
-        class JokerDesc_Patch
-        {
-            [HarmonyPatch(nameof(Skill_Extended.DescExtended))]
-            [HarmonyPostfix]
-            static void DescExtendedPostfix(ref string __result, Skill_Extended __instance)
-            {
-                if (__instance is SkillExtended_Joker_0)
-                {
-                    __result = "Draw a skill from the deck.\nAll allies take 15 damage per <b>Bleeding or Stunned</b> debuff when this skill is cast or discarded.\n\n<color=#919191>How did this get here...</color>";
-                }
-            }
-        }
+        ////Change Joker Card Desc
+        //[HarmonyPatch(typeof(Skill_Extended))]
+        //class JokerDesc_Patch
+        //{
+        //    [HarmonyPatch(nameof(Skill_Extended.DescExtended))]
+        //    [HarmonyPostfix]
+        //    static void DescExtendedPostfix(ref string __result, Skill_Extended __instance)
+        //    {
+        //        if (__instance is SkillExtended_Joker_0)
+        //        {
+        //            __result = "Draw a skill from the deck.\nWhen cast or discarded, all allies take 15 damage for each <b>Bleeding or Stunned</b> debuff. \n<color=#919191>How did this get here...</color>";
+        //        }
+        //    }
+        //}//
 
         //Unused Skill Extended: Reaper Discard death sentence marked skill
-        [HarmonyPatch(typeof(Extended_Hein_5))]
-        class DiscardTopPatch
-        {
-            [HarmonyPatch(nameof(Extended_Hein_5.SkillUseSingle))]
-            [HarmonyPrefix]
-            static bool Prefix(Extended_Hein_5 __instance, Skill SkillD, List<BattleChar> Targets)
-            {
-                
-                    foreach (Skill s in BattleSystem.instance.AllyTeam.Skills)
-                    {
-                        //Debug.Log("Here");
-                        if (s.MySkill.User != "LucyDraw" && s.MySkill.User != "Lucy")
-                        {
-                        //Debug.Log("Not Lucy");
-                            s.Delete(false);
-                            break;
-                        }
-                    }
-                return false;
-            }
-        }
+        //[HarmonyPatch(typeof(Extended_Hein_5))]
+        //class DiscardTopPatch
+        //{
+        //    [HarmonyPatch(nameof(Extended_Hein_5.SkillUseSingle))]
+        //    [HarmonyPrefix]
+        //    static bool Prefix(Extended_Hein_5 __instance, Skill SkillD, List<BattleChar> Targets)
+        //    {
+
+        //            foreach (Skill s in BattleSystem.instance.AllyTeam.Skills)
+        //            {
+        //                //Debug.Log("Here");
+        //                if (s.MySkill.User != "LucyDraw" && s.MySkill.User != "Lucy")
+        //                {
+        //                //Debug.Log("Not Lucy");
+        //                    s.Delete(false);
+        //                    break;
+        //                }
+        //            }
+        //        return false;
+        //    }
+        //}
 
         //Karaela Armor Debuff: -15% debuff resist power
         [HarmonyPatch(typeof(TheLight_1_T))]
@@ -1301,20 +1372,20 @@ namespace BossChanges
         //    }
         //}
 
-        //Change Impale Desc
-        [HarmonyPatch(typeof(Skill_Extended))]
-        class LastAttack_Patch
-        {
-            [HarmonyPatch(nameof(Skill_Extended.DescExtended))]
-            [HarmonyPostfix]
-            static void DescExtendedPostfix(ref string __result, Skill_Extended __instance)
-            {
-                if (__instance is S4_King_LastAttack)
-                {
-                    __result = "<color=red>Execute the target.</color>";
-                }
-            }
-        }
+        ////Change Impale Desc
+        //[HarmonyPatch(typeof(Skill_Extended))]
+        //class LastAttack_Patch
+        //{
+        //    [HarmonyPatch(nameof(Skill_Extended.DescExtended))]
+        //    [HarmonyPostfix]
+        //    static void DescExtendedPostfix(ref string __result, Skill_Extended __instance)
+        //    {
+        //        if (__instance is S4_King_LastAttack)
+        //        {
+        //            __result = "<color=red>Execute the target.</color>";
+        //        }
+        //    }
+        //}
 
         //Godo Speed Change : Change to Action Count 1->2
         //[HarmonyPatch(typeof(AI_Gunman))]

@@ -15,6 +15,8 @@ using ChronoArkMod.ModData;
 using ChronoArkMod.ModData.Settings;
 using ChronoArkMod.Plugin;
 using DarkTonic.MasterAudio;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace ExpertPlusMod
 {
@@ -28,6 +30,7 @@ namespace ExpertPlusMod
         public static bool DespairMode = false;
         public static bool CursedBosses = false;
         public static bool ChaosMode = false;
+        public static bool EnableBossChanges = false;
 
         public override void Initialize()
         {
@@ -37,9 +40,13 @@ namespace ExpertPlusMod
             DespairMode = modInfo.GetSetting<ToggleSetting>("DespairMode").Value;
             CursedBosses = modInfo.GetSetting<ToggleSetting>("CursedBosses").Value;
             ChaosMode = modInfo.GetSetting<ToggleSetting>("ChaosMode").Value;
+            EnableBossChanges = modInfo.GetSetting<ToggleSetting>("EnableBossChanges").Value;
 
             this.harmony = new Harmony(base.GetGuid());
             this.harmony.PatchAll();
+
+            BanSave.Init();
+            Debug.Log(Application.persistentDataPath + "/ExpertPlusClear.txt");
         }
         public override void Dispose()
         {
@@ -101,6 +108,10 @@ namespace ExpertPlusMod
                             {
                                 (masterJson[e.Key] as Dictionary<string, object>)["maxhp"] = 420;
                             }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 21;
+                            }
                         }
 
                         if (e.Key == "Queue_S4_King")
@@ -108,6 +119,10 @@ namespace ExpertPlusMod
                             if (DespairMode)
                             {
                                 (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 18;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 21;
                             }
                         }
                         if (e.Key == "Queue_Witch")
@@ -119,6 +134,10 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 99;
                                 (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 14;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 17;
                             }
                         }
 
@@ -147,6 +166,31 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
                             }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 24;
+                            }
+                        }
+
+                        if (e.Key == "Shiranui_Queue")
+                        {
+                            if (DespairMode)
+                            {
+                                List<string> a = new List<string>();
+                                a.Add("MBoss2_0");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 99;
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 15;
+
+                                List<string> b = new List<string>();
+                                b.Add("S2_Joker");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 18;
+                            }
                         }
 
                         if (e.Key == "Queue_S2_Joker")
@@ -158,6 +202,10 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 99;
                                 (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 14;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 17;
                             }
                         }
 
@@ -180,6 +228,7 @@ namespace ExpertPlusMod
                                 a.Add("SR_Outlaw");
                                 a.Add("SR_Blade");
                                 a.Add("SR_Sniper");
+                                //a.Add("SR_Tumbledochi");
                                 (masterJson[e.Key] as Dictionary<string, object>)["Enemys"] = a;
 
                                 List<string> b = new List<string>();
@@ -204,13 +253,22 @@ namespace ExpertPlusMod
                                 pos4.Add("x", -4);
                                 pos4.Add("y", 0);
                                 pos4.Add("z", -1);
+                                //Dictionary<string, int> pos5 = new Dictionary<string, int>();
+                                //pos5.Add("x", -10);
+                                //pos5.Add("y", 0);
+                                //pos5.Add("z", -1);
                                 List<Dictionary<string, int>> c = new List<Dictionary<string, int>>();
                                 c.Add(pos2);
                                 c.Add(pos3);
                                 c.Add(pos4);
                                 c.Add(pos1);
+                                //c.Add(pos5);
                                 (masterJson[e.Key] as Dictionary<string, object>)["Pos"] = c;
                                 (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 14;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 17;
                             }
                         }
 
@@ -237,6 +295,10 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["Pos"] = c;
                                 (masterJson[e.Key] as Dictionary<string, object>)["UseCustomPosition"] = false;
 
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 24;
                             }
                         }
 
@@ -267,6 +329,10 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
                             }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 24;
+                            }
                         }
 
                         if (e.Key == "Queue_S3_TheLight")
@@ -287,6 +353,10 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
                             }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 24;
+                            }
                         }
 
                         if (e.Key == "Queue_S3_PharosLeader")
@@ -306,6 +376,10 @@ namespace ExpertPlusMod
                                 b.Add("S3_Boss_Reaper");
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 24;
                             }
                         }
 
@@ -434,6 +508,15 @@ namespace ExpertPlusMod
                 {
                     PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Consume_EquipPouch, 1));
                     PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Consume_SkillBookLucy_Rare, 3));
+
+                    // identifies transfer scroll
+                    if (PlayData.TSavedata.IdentifyItems.Find((string x) => x == GDEItemKeys.Item_Scroll_Scroll_Transfer) == null)
+                    {
+                        PlayData.TSavedata.IdentifyItems.Add(GDEItemKeys.Item_Scroll_Scroll_Transfer);
+                    }
+
+                    // Add 1 lifting scroll
+                    PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Scroll_Scroll_Transfer, 1));
                 }
             }
         }
@@ -573,16 +656,37 @@ namespace ExpertPlusMod
                 // Here
                 if (CursedBosses)
                 {
-                    if (gdeenemyData.Boss == true && gdeenemyData.Key == "S1_WitchBoss")
+                    // Marauding & Executioner Ban
+                    if (gdeenemyData.Boss == true && (gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster2 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_Shiranui || gdeenemyData.Key == "S3_Boss_Reaper" || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_0 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_1))
                     {
                         List<string> list = new List<string> { "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
                         string curse = list.Random();
                         Debug.Log("Boss curse: " + curse);
                         component.BuffAdd(curse, component, false, 0, false, -1, false);
                     }
-                    else if (gdeenemyData.Boss == true)
+                    // Marauding Ban
+                    else if (gdeenemyData.Boss == true && (gdeenemyData.Key == "S1_WitchBoss"))
+                    {
+                        List<string> list = new List<string> { "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_4", "B_CursedMob_5" };
+                        string curse = list.Random();
+                        Debug.Log("Boss curse: " + curse);
+                        component.BuffAdd(curse, component, false, 0, false, -1, false);
+                    }
+                    //Executioner Ban
+                    else if (gdeenemyData.Boss == true && ( gdeenemyData.Key == GDEItemKeys.Enemy_Boss_Golem ||
+                        gdeenemyData.Key == GDEItemKeys.Enemy_S1_BossDorchiX || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_0
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_SR_GunManBoss || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_1
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_S3_Boss_Pope || gdeenemyData.Key == GDEItemKeys.Enemy_S4_King_0
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_LBossFirst || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster))
                     {
                         List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
+                        string curse = list.Random();
+                        Debug.Log("Boss curse: " + curse);
+                        component.BuffAdd(curse, component, false, 0, false, -1, false);
+                    }
+                    else if (gdeenemyData.Boss == true)
+                    {
+                        List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_4", "B_CursedMob_5" };
                         string curse = list.Random();
                         Debug.Log("Boss curse: " + curse);
                         component.BuffAdd(curse, component, false, 0, false, -1, false);
@@ -1199,7 +1303,7 @@ namespace ExpertPlusMod
                             BattleSystem.instance.AllyTeam.Add(Skill.TempSkill(GDEItemKeys.Skill_S_Sniper_1, BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam), true);
                         }
                         // Crimson Boss Fight
-                        if (BattleSystem.instance.MainQueueData.Wave2Turn == 4)
+                        if (BattleSystem.instance.MainQueueData.Wave2Turn == 8 || PlayData.BattleQueue == GDEItemKeys.EnemyQueue_CrimsonQueue_GunManBoss)
                         {
                             Skill s = Skill.TempSkill(GDEItemKeys.Skill_S_Lucy_25, BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam);
                             s.AP = -1;
@@ -1241,7 +1345,7 @@ namespace ExpertPlusMod
             {
                 if (DespairMode)
                 {
-                    float result = 601f;
+                    float result = 600f;
                     if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Garden_Midboss)
                     {
                         result = 30f;
@@ -1252,35 +1356,35 @@ namespace ExpertPlusMod
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_Witch)
                     {
-                        result = 385f;
+                        result = 420f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_Golem)
                     {
-                        result = 385f;
+                        result = 420f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_DorchiX)
                     {
-                        result = 385f;
+                        result = 420f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_S2_Joker)
                     {
-                        result = 160f;
+                        result = 240f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_MBoss2_0)
                     {
-                        result = 160f;
+                        result = 240f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_S2_MainBoss_Luby)
                     {
-                        result = 420f;
+                        result = 540f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_S2_BombClown)
                     {
-                        result = 420f;
+                        result = 540f;
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_S2_TimeEater)
                     {
-                        result = 420f;
+                        result = 540f;
                     }
                     __result = result;
                     return false;
@@ -1457,32 +1561,205 @@ namespace ExpertPlusMod
         {
             [HarmonyPatch(nameof(AI_MBoss2_0_0.SkillSelect))]
             [HarmonyPrefix]
-            static bool Prefix(AI_MBoss2_0_0 __instance, ref Skill __result)
+            static bool Prefix(int ActionCount, AI_MBoss2_0_0 __instance, ref Skill __result)
             {
                 if (CursedBosses)
                 {
-                    if (__instance.FirstTurn)
+                    // Marauding
+                    if (__instance.BChar.BuffFind("B_CursedMob_0"))
                     {
-                        __result = __instance.BChar.Skills[0];
+                        if (__instance.FirstTurn)
+                        {
+                            __result = __instance.BChar.Skills[0];
+                        }
+                        else if (__instance.Ready >= 3)
+                        {
+                            __result = __instance.BChar.Skills[0];
+                            __instance.Ready = 0;
+                        }
+                        else if (__instance.Ready >= 1)
+                        {
+                            __result = __instance.BChar.Skills[2];
+                        }
+                        else
+                        {
+                            __result = __instance.BChar.Skills[1];
+                        }
+                        return false;
                     }
-                    else if (__instance.Ready >= 2)
-                    {
-                        __result = __instance.BChar.Skills[0];
-                        __instance.Ready = 0;
-                    }
-                    else if (__instance.Ready >= 1)
-                    {
-                        __result = __instance.BChar.Skills[2];
-                    }
+
+                    // Not Marauding
                     else
                     {
-                        __result = __instance.BChar.Skills[1];
+                        if (__instance.FirstTurn)
+                        {
+                            __result = __instance.BChar.Skills[0];
+                        }
+                        else if (__instance.Ready >= 2)
+                        {
+                            __result = __instance.BChar.Skills[0];
+                            __instance.Ready = 0;
+                        }
+                        else if (__instance.Ready >= 1)
+                        {
+                            __result = __instance.BChar.Skills[2];
+                        }
+                        else
+                        {
+                            __result = __instance.BChar.Skills[1];
+                        }
+                        return false;
                     }
-                    return false;
                 }
                 return true;
             }
         }
+
+        //Witch casts dark spark when minions are active
+        [HarmonyPatch(typeof(AI_Witch))]
+        class WitchPatch
+        {
+            [HarmonyPatch(nameof(AI_Witch.SkillSelect))]
+            [HarmonyPrefix]
+            static bool Prefix(ref Skill __result, AI_Witch __instance, int ActionCount)
+            {
+                if (EnableBossChanges)
+                {
+                    if (ActionCount == 1 && BattleSystem.instance.EnemyList.Count != 1)
+                    {
+                        __result = __instance.BChar.Skills[1]; //berserk
+                    }
+                    else if (ActionCount == 1 && BattleSystem.instance.EnemyList.Count == 1)
+                    {
+                        __result = __instance.BChar.Skills[0]; //summon
+                    }
+                    else
+                    {
+                        __result = __instance.BChar.Skills[2]; //dark spark
+                    }
+                    return false;
+                }
+
+                // No Boss Changes
+                else
+                {
+                    if (ActionCount == 1 && BattleSystem.instance.EnemyList.Count == 1)
+                    {
+                        __result = __instance.BChar.Skills[0];
+                        return false;
+                    }
+                    if (BattleSystem.instance.EnemyList.Count > 1)
+                    {
+                        __result = __instance.BChar.Skills[1];
+                        return false;
+                    }
+                }
+                __result = null;
+                return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(AI_Boss_Reaper))]
+        class Reaper_patch
+        {
+            [HarmonyPatch(nameof(AI_Boss_Reaper.SkillSelect))]
+            [HarmonyPrefix]
+            static bool Prefix(int ActionCount, AI_Boss_Reaper __instance, ref Skill __result)
+            {
+                if (ActionCount == 1)
+                {
+                    __result = __instance.BChar.Skills[0];
+                    return false;
+                }
+                if (ActionCount == 0 && BattleSystem.instance.EnemyList.Count == 1)
+                {
+                    __result = __instance.BChar.Skills[3];
+                    return false;
+                }
+                __result = __instance.SkillRandomSelect(new List<Skill>
+                {
+                    __instance.BChar.Skills[1],
+                    __instance.BChar.Skills[2]
+                });
+                return false;
+            }
+        }
+
+        // TFK speedchange
+        [HarmonyPatch(typeof(Ai_King))]
+        class TFK_Speed_Patch
+        {
+            [HarmonyPatch(nameof(Ai_King.SpeedChange))]
+            [HarmonyPrefix]
+            static bool Prefix(Skill skill, int ActionCount, int OriginSpeed, Ai_King __instance, ref int __result)
+            {
+                if (CursedBosses)
+                {
+                    if (skill.MySkill.KeyID == GDEItemKeys.Skill_S_S4_King_P2_0)
+                    {
+                        if (ActionCount == 1)
+                        {
+                            __result = 2;
+                            return false;
+                        }
+                        else if (ActionCount == 2 && __instance.BChar.BuffFind("B_CursedMob_0"))
+                        {
+                            __result = 3;
+                            return false;
+                        }
+                        else
+                        {
+                            __result = 99;
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        // Amplify Time delete
+        [HarmonyPatch(typeof(B_Mboss2_1_P2))]
+        class AmplifyTime_Delete
+        {
+            [HarmonyPatch(nameof(B_Mboss2_1_P2.Turn1))]
+            [HarmonyPostfix]
+            static void Postfix(B_Mboss2_1_P2 __instance)
+            {
+                bool find = false;
+                foreach (BattleChar b in BattleSystem.instance.EnemyTeam.AliveChars)
+                {
+                    if (b.Info.KeyData == "MBoss2_1")
+                    {
+                        find = true;
+                    }
+                }
+                if (find)
+                {
+
+                }
+                else
+                {
+                    __instance.SelfDestroy();
+                }
+            }
+        }
+
+        // Insurmountable Patch
+        //[HarmonyPatch(typeof(B_DuelistWill))]
+        //[HarmonyPatch(nameof(B_DuelistWill.HPChange))]
+        //class DuelistWillPatch
+        //{
+        //    [HarmonyPostfix]
+        //    static void Postfix(B_DuelistWill __instance)
+        //    {
+        //        if (BattleSystem.instance.MainQueueData.Key != "CrimsonQueue_GunManBoss")
+        //        {
+        //            return;
+        //        }
+        //        __instance.BChar.BuffAdd(GDEItemKeys.Buff_B_S4_King_P_0, __instance.BChar, false, 0, false, -1, false);
+        //    }
+        //}
 
         //Every Fight is Cursed
         // Fisher–Yates shuffle
@@ -1989,6 +2266,11 @@ namespace ExpertPlusMod
                     __instance.Level4DoubleBoss = true;
                     GDEItemKeys.EnemyQueue_Queue_S4_King = "LBossFirst_Queue";
                     FieldSystem.instance.BattleStart(new GDEEnemyQueueData("Queue_S4_King"), StageSystem.instance.StageData.BattleMap.Key, false, false, "", "", false);
+
+                    List<ItemBase> list = new List<ItemBase>();
+                    list.Add(ItemBase.GetItem(GDEItemKeys.Item_Consume_Herb));
+                    InventoryManager.Reward(list);
+
                     Debug.Log("Changed to LBoss");
                     Debug.Log(PlayData.TSavedata.StageNum);
                     return false;
@@ -2007,7 +2289,7 @@ namespace ExpertPlusMod
             {
                 if (DespairMode && PlayData.TSavedata.bMist != null && PlayData.TSavedata.bMist.Level == 4 && PlayData.TSavedata.StageNum != 5)
                 {
-                    if (PlayData.BattleQueue == GDEItemKeys.EnemyQueue_Queue_S3_PharosLeader || PlayData.BattleQueue == GDEItemKeys.Enemy_S3_Boss_Reaper || PlayData.BattleQueue == GDEItemKeys.EnemyQueue_Queue_S3_TheLight || PlayData.BattleQueue == GDEItemKeys.EnemyQueue_Queue_S4_King)
+                    if (PlayData.BattleQueue == GDEItemKeys.EnemyQueue_Queue_S3_PharosLeader || PlayData.BattleQueue == GDEItemKeys.Enemy_S3_Boss_Reaper || PlayData.BattleQueue == GDEItemKeys.EnemyQueue_Queue_S3_TheLight)
                     {
                         foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
                         {
@@ -2036,7 +2318,7 @@ namespace ExpertPlusMod
             {
                 if (!__instance.CombineBtn.interactable)
                 {
-                    return false;
+                    return true;
                 }
                 if (__instance.InventoryItems[0] != null && __instance.InventoryItems[1] != null)
                 {
@@ -2054,18 +2336,27 @@ namespace ExpertPlusMod
                             ItemBase.GetItem(__instance.InventoryItems[1].itemkey),
                             ItemBase.GetItem(__instance.InventoryItems[1].itemkey),
                             };
-                            foreach (Item_Equip item in items)
+                            List<string> list = new List<string> { "CurseEn_NightMare", "CurseEn_Spike", "CurseEn_Giant", "CurseEn_Dream", "CurseEn_Rapid" };
+                            
+                            
+                            List<string> list2 = list.Random(RandomClassKey.CursedEnchant, 3);
+                            list2.AddRange(list.Random(RandomClassKey.CursedEnchant, 3));
+
+                            for (int i=0;i<6;i++)
                             {
-                                ItemEnchant.RandomCurseEnchant(item);
-                                item._Isidentify = true;
+                                (items[i] as Item_Equip).Enchant = ItemEnchant.NewEnchant((items[i] as Item_Equip), list2[i]);
+                                (items[i] as Item_Equip)._Isidentify = true;
                             }
+
                             MasterAudio.PlaySound("Anvil", 1f, null, 0f, null, null, false, false);
                             UIManager.InstantiateActive(UIManager.inst.SelectItemUI).GetComponent<SelectItemUI>().Init(items, null, false);
                             __instance.DelItem(0);
                             __instance.DelItem(1);
+                            PlayData.TSavedata.AnvilCount--;
+                            return false;
                         }
                     }
-                    return false;
+                    return true;
                 }
                 return true;
             }
@@ -2098,6 +2389,18 @@ namespace ExpertPlusMod
                 List<ItemBase> list = new List<ItemBase>();
                 list.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_TimeMoney, 7));
                 InventoryManager.Reward(list);
+
+                foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
+                {
+                    if (b.Info.Incapacitated)
+                    {
+                        b.Info.Incapacitated = false;
+                        b.HP = 1;
+                        Debug.Log("healed");
+                    }
+                    int num = (int)Misc.PerToNum((float)b.GetStat.maxhp, 400f);
+                    b.Heal(b, (float)num, false);
+                }
                 return false;
             }
         }
@@ -2138,16 +2441,71 @@ namespace ExpertPlusMod
         class ResetBoss
         {
             [HarmonyPostfix]
-            static void Postfix()
+            static void Postfix(bool Win)
             {
-                if (PlayData.TSavedata.StageNum != 4)
+                if (PlayData.TSavedata.StageNum != 4) // Stagenum = 4 is despair mode tfk in white grave
                 {
                     GDEItemKeys.EnemyQueue_Queue_S4_King = "Queue_S4_King";
                     Debug.Log("Reset Sanctuary Boss");
+
+                    if (Win)
+                    {
+                        foreach (Character character in PlayData.TSavedata.Party)
+                        {
+                            BanSave.BanCharacterKeys.Add(character.KeyData);
+                            Debug.Log("Added " + character.KeyData);
+                        }
+                        BanSave.WriteBanKeys();
+                    }
+                }
+            }
+        }
+        // Despair Mode Blood Mist 4 End //
+
+        // Clear Border for ExpertPlus
+        [HarmonyPatch(typeof(CharSelectButtonV2), nameof(CharSelectButtonV2.Init))]
+        class ClearBorder
+        {
+            [HarmonyPostfix]
+            static void Postfix(CharSelectButtonV2 __instance)
+            {
+                if (BanSave.BanCharacterKeys.Contains(__instance.data.Key))
+                {
+                    __instance.ClearIcon.gameObject.SetActive(false);
+
+                    GameObject gameObject = Utils.creatGameObject("border", __instance.transform);
+                    Image bg = gameObject.AddComponent<Image>();
+                    Utils.getSprite("purple.png", bg);
+                    Utils.ImageResize(bg, new Vector2(120f, 165f), Vector2.zero);
+                    __instance.ClearIcon = bg;
+                    __instance.ClearIcon.sprite = bg.sprite;
+                    __instance.ClearIcon.gameObject.SetActive(true);
+
+                    Debug.Log("border switch attempted");
                 }
             }
         }
 
-        // Despair Mode Blood Mist 4 End //
+        [HarmonyPatch(typeof(CharSelectButtonV2), nameof(CharSelectButtonV2.Click))]
+        class SelectBox
+        {
+            [HarmonyPostfix]
+            static void Postfix(CharSelectButtonV2 __instance)
+            {
+                if (BanSave.BanCharacterKeys.Contains(__instance.data.Key))
+                {
+                    //__instance.Box.color = Misc.HexColor("EFB2AB");
+                    __instance.Box.color = Misc.HexColor("cdabef");
+                    Debug.Log("Box Color Switch Attempted");
+
+
+                    //GameObject gameObject = Utils.creatGameObject("line", __instance.transform);
+                    //Image line = gameObject.AddComponent<Image>();
+                    //Utils.getSprite("redline.png", line);
+                    //__instance.SetLine(line.sprite);
+                    //Debug.Log("Line Color Switch Attempted");
+                }
+            }
+        }
     }
 }

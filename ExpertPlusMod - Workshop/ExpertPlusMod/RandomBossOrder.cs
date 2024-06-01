@@ -29,7 +29,7 @@ namespace ExpertPlusMod
                     GDEItemKeys.EnemyQueue_Queue_S2_Joker,
                     GDEItemKeys.EnemyQueue_Queue_S2_MainBoss_Luby,
                     GDEItemKeys.EnemyQueue_Queue_S3_PharosLeader,
-                    GDEItemKeys.EnemyQueue_Queue_DorchiX
+                    //GDEItemKeys.EnemyQueue_Queue_DorchiX
                 };
                 if (queuesToRandomize.Contains(PlayData.BattleQueue))
                 {
@@ -72,7 +72,11 @@ namespace ExpertPlusMod
                     __instance.AI = typeof(CustomBombClownAI).AssemblyQualifiedName;
 
                 }
+                else if (__instance.Key == "S2_Shiranui")
+                {
+                    __instance.AI = typeof(CustomShiranuiAI).AssemblyQualifiedName;
 
+                }
             }
         }
 
@@ -128,6 +132,58 @@ namespace ExpertPlusMod
                     }
                     return base.SkillSelect(ActionCount);
                 }
+            }
+
+        }
+
+        public class CustomShiranuiAI : AI_Shiranui
+        {
+            int spawnTurn = 0;
+
+            public override Skill SkillSelect(int ActionCount)
+            {
+
+                if (this.Phase2 != 1)
+                {
+                    if (BattleSystem.instance.TurnNum % 2 == 1)
+                    {
+                        if (ActionCount == 0)
+                        {
+                            return this.BChar.Skills[1];
+                        }
+                        if (ActionCount == 1)
+                        {
+                            return this.BChar.Skills[3];
+                        }
+                        if (ActionCount == 2)
+                        {
+                            return this.BChar.Skills[1];
+                        }
+                    }
+                    else
+                    {
+                        if (ActionCount == 0)
+                        {
+                            return this.BChar.Skills[2];
+                        }
+                        if (ActionCount == 1)
+                        {
+                            return this.BChar.Skills[3];
+                        }
+                        if (ActionCount == 2)
+                        {
+                            return this.BChar.Skills[2];
+                        }
+                    }
+                    return base.SkillSelect(ActionCount);
+                }
+                if (ActionCount == 0)
+                {
+                    this.BChar.BuffAdd(GDEItemKeys.Buff_B_RemoveStun, this.BChar, false, 0, false, -1, false);
+                    return this.BChar.Skills[0];
+                }
+                this.Phase2 = 2;
+                return this.BChar.Skills[2];
             }
 
         }

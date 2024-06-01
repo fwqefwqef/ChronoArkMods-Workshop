@@ -43,7 +43,6 @@ C:\Users\sjkim\source\repos\ExpertPlusMod\ExpertPlusMod\bin\Debug\System.Xml.XPa
 C:\Users\sjkim\source\repos\ExpertPlusMod\ExpertPlusMod\bin\Debug\Newtonsoft.Json.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod\ExpertPlusMod\bin\Debug\UnityEngine.ImageConversionModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod\ExpertPlusMod\bin\Debug\UnityEngine.UnityWebRequestAudioModule.dll
-C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\ExpertPlusMod.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\ExpertPlusMod.pdb
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\0Harmony.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Assembly-CSharp.dll
@@ -51,7 +50,6 @@ C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\net
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\System.Net.Http.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.ParticleSystemModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.UIModule.dll
-C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Unity.ResourceManager.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.Physics2DModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.AudioModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.PhysicsModule.dll
@@ -126,3 +124,4 @@ C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Uni
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.CrashReportingModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\System.ServiceModel.Internals.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.AnimationModule.dll
+C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\ExpertPlusMod.dll

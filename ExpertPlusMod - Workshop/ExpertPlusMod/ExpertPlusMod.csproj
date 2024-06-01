@@ -51,6 +51,7 @@
     <Reference Include="Unity.Addressables">
       <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\Unity.Addressables.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Unity.TextMeshPro">
       <HintPath>..\..\..\..\..\..\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\Unity.TextMeshPro.dll</HintPath>
     </Reference>
@@ -71,9 +72,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BanSave.cs" />
     <Compile Include="ExpertPlusMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomBossOrder.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -93,6 +93,13 @@ namespace ExpertPlusMod
                         //    }
                         //}
 
+                        if (e.Key == "RedHammer")
+                        {
+                            //(masterJson[e.Key] as Dictionary<string, object>)["stack"] = 1;
+                            (masterJson[e.Key] as Dictionary<string, object>)["Stack"] = 5;
+                                //(masterJson[e.Key] as Dictionary<string, object>)["MaxStack"] = 5;
+                        }
+
                         /// Despair Mode
                         if (e.Key == "S4_King_0")
                         {
@@ -189,7 +196,28 @@ namespace ExpertPlusMod
                             }
                             if (DespairMode && CursedBosses)
                             {
-                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 18;
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 17;
+                            }
+                        }
+
+                        if (e.Key == "Casino_Queue")
+                        {
+                            if (DespairMode)
+                            {
+                                List<string> a = new List<string>();
+                                a.Add("MBoss2_0");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 99;
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 15;
+
+                                List<string> b = new List<string>();
+                                b.Add("S2_Joker");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 17;
                             }
                         }
 
@@ -234,7 +262,7 @@ namespace ExpertPlusMod
                                 List<string> b = new List<string>();
                                 b.Add("SR_GunManBoss");
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = b;
-                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 8;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 7;
 
                                 (masterJson[e.Key] as Dictionary<string, object>)["UseCustomPosition"] = true;
                                 Dictionary<string, int> pos1 = new Dictionary<string, int>();
@@ -489,8 +517,8 @@ namespace ExpertPlusMod
             [HarmonyPostfix]
             static void StageStartPostfix()
             {
-                if (!DespairMode)
-                {
+                //if (!DespairMode)
+                //{
                     if (PlayData.TSavedata.StageNum == 0 /*&& !PlayData.TSavedata.GameStarted*/)
                     {
                         // identifies lifting scroll
@@ -502,7 +530,7 @@ namespace ExpertPlusMod
                         // Add 1 lifting scroll
                         PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Scroll_Scroll_Uncurse, 1));
 
-                    }
+                    //}
                 }
                 if (CursedBosses && DespairMode && PlayData.TSavedata.StageNum == 0)
                 {
@@ -514,8 +542,6 @@ namespace ExpertPlusMod
                     {
                         PlayData.TSavedata.IdentifyItems.Add(GDEItemKeys.Item_Scroll_Scroll_Transfer);
                     }
-
-                    // Add 1 lifting scroll
                     PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Scroll_Scroll_Transfer, 1));
                 }
             }
@@ -557,7 +583,7 @@ namespace ExpertPlusMod
             }
         }
 
-        // Chaos Mode Randomization
+        // Chaos Mode Randomization 
         static List<string> tier1 = new List<string>() { "S1_Statue1", "S1_Dochi", "S1_Maid", "S1_Table", "S1_Statue2", "S1_Pharos_Mage", "S1_Pharos_Healer", "S1_Pharos_Tanker", "S1_LittleMaid" };
         static List<string> tier2 = new List<string>() { "S1_Statue1", "S1_Dochi", "S1_Maid", "S1_Statue2", "S1_Pharos_Mage", "S1_Pharos_Tanker", "S1_LittleMaid", "S1_Butler", "S1_Pharos_Warrior" };
         static List<string> tier3 = new List<string>() { "S2_Pierrot_Bat", "S2_DochiDoll", "S2_Horse", "S2_Pierrot_Axe", "S2_Ghost", "S1_Pharos_Warrior", "S2_Pharos_Healer", "S2_Pharos_Mage" };
@@ -657,7 +683,7 @@ namespace ExpertPlusMod
                 if (CursedBosses)
                 {
                     // Marauding & Executioner Ban
-                    if (gdeenemyData.Boss == true && (gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster2 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_Shiranui || gdeenemyData.Key == "S3_Boss_Reaper" || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_0 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_1))
+                    if (gdeenemyData.Boss == true && (gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster || gdeenemyData.Key == GDEItemKeys.Enemy_Boss_Golem || gdeenemyData.Key == "TheDealer" || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster2 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_Shiranui || gdeenemyData.Key == "S3_Boss_Reaper" || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_0 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_1 ))
                     {
                         List<string> list = new List<string> { "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
                         string curse = list.Random();
@@ -673,11 +699,11 @@ namespace ExpertPlusMod
                         component.BuffAdd(curse, component, false, 0, false, -1, false);
                     }
                     //Executioner Ban
-                    else if (gdeenemyData.Boss == true && ( gdeenemyData.Key == GDEItemKeys.Enemy_Boss_Golem ||
+                    else if (gdeenemyData.Boss == true && ( 
                         gdeenemyData.Key == GDEItemKeys.Enemy_S1_BossDorchiX || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_0
                         || gdeenemyData.Key == GDEItemKeys.Enemy_SR_GunManBoss || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_1
-                        || gdeenemyData.Key == GDEItemKeys.Enemy_S3_Boss_Pope || gdeenemyData.Key == GDEItemKeys.Enemy_S4_King_0
-                        || gdeenemyData.Key == GDEItemKeys.Enemy_LBossFirst || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster))
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_S3_Boss_Pope || gdeenemyData.Key == GDEItemKeys.Enemy_S3_Boss_TheLight 
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_S4_King_0 || gdeenemyData.Key == GDEItemKeys.Enemy_LBossFirst))
                     {
                         List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
                         string curse = list.Random();
@@ -1169,21 +1195,23 @@ namespace ExpertPlusMod
         //}
 
 
-        // Add Lifting Scroll in some shops
-        //[HarmonyPatch(typeof(FieldStore))]
-        //class FieldStore_Patch
-        //{
-        //    [HarmonyPatch(nameof(FieldStore.Init))]
-        //    [HarmonyPostfix]
-        //    static void Postfix(FieldStore __instance)
-        //    {
-
-        //        if (PlayData.TSavedata.StageNum == 2 || PlayData.TSavedata.StageNum == 4)
-        //        {
-        //            __instance.StoreItems.Add(ItemBase.GetItem(GDEItemKeys.Item_Scroll_Scroll_Uncurse));
-        //        }
-        //    }
-        //}
+        // Add Infinite Skillbook in mg2 shop
+        [HarmonyPatch(typeof(FieldStore))]
+        class FieldStore_Patch
+        {
+            [HarmonyPatch(nameof(FieldStore.Init))]
+            [HarmonyPostfix]
+            static void Postfix(FieldStore __instance)
+            {
+                if (CursedBosses & DespairMode)
+                {
+                    if (PlayData.TSavedata.StageNum == 1)
+                    {
+                        __instance.StoreItems.Add(ItemBase.GetItem(GDEItemKeys.Item_Consume_SkillBookInfinity));
+                    }
+                }
+            }
+        }
 
         // Add Pain Debuff Resist -10% to Pierrot (and living armor) debuff
         //[HarmonyPatch(typeof(B_Pierrot_Bat_1_T))]

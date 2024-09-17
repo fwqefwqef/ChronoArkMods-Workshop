@@ -103,6 +103,8 @@ namespace BossChanges
                         // Witch: Add an action count, add dark spark to skill list, change speed
                         if (e.Key == "S1_WitchBoss")
                         {
+                            (masterJson[e.Key] as Dictionary<string, object>)["spd"] = 0;
+
                             //add action count
                             List<int> a = new List<int>();
                             a.Add(100);
@@ -230,10 +232,10 @@ namespace BossChanges
                         }
 
                         // Bomber Clown Time Bomb: Cost increased to 1
-                        if (e.Key == "S_BombClown_B_0")
-                        {
-                            (masterJson[e.Key] as Dictionary<string, object>)["UseAp"] = 1;
-                        }
+                        //if (e.Key == "S_BombClown_B_0")
+                        //{
+                        //    (masterJson[e.Key] as Dictionary<string, object>)["UseAp"] = 1;
+                        //}
 
                         //// Death Sentence Damage: 26 -> 9999
                         //if (e.Key == "SE_Boss_Reaper_0_PlusHit_T")
@@ -450,40 +452,17 @@ namespace BossChanges
                             (masterJson[e.Key] as Dictionary<string, object>)["reg"] = 10;
                         }
 
+                        if (e.Key == "TheDealer")
+                        {
+                            (masterJson[e.Key] as Dictionary<string, object>)["maxhp"] = 450;
+                            (masterJson[e.Key] as Dictionary<string, object>)["atk"] = 16;
+                        }
+
                     }
                 }
                 dataString = Json.Serialize(masterJson);
             }
         }
-
-        //Witch casts dark spark when minions are active
-        [HarmonyPatch(typeof(AI_Witch))]
-        class WitchPatch
-        {
-            [HarmonyPatch(nameof(AI_Witch.SkillSelect))]
-            [HarmonyPrefix]
-            static bool Prefix(ref Skill __result, AI_Witch __instance, int ActionCount)
-            {
-                Debug.Log("Witch Skill selecting..");
-                Debug.Log("Action Count: " + ActionCount);
-                Debug.Log("Enemy Count: " + BattleSystem.instance.EnemyList.Count);
-                // ActionCount = 0 is first action, ActionCount = 1 is second action
-                if (ActionCount == 1)
-                {
-                    __result = __instance.BChar.Skills[1]; //berserk
-                }
-                else if (ActionCount == 0 && BattleSystem.instance.EnemyList.Count == 1)
-                {
-                    __result = __instance.BChar.Skills[0]; //summon
-                }
-                else
-                {
-                    __result = __instance.BChar.Skills[2]; //dark spark
-                }
-                return false;
-            }
-        }
-
 
         static System.Collections.IEnumerator WindyTurns(B_Joker_P_0 __instance)
         {
@@ -573,7 +552,16 @@ namespace BossChanges
             [HarmonyPrefix]
             static bool Prefix()
             {
-                BattleSystem.DelayInput(BattleSystem.instance.NewEnemyAutoPos("S2_Pierrot_Bat2", null));
+                int count = BattleSystem.instance.EnemyTeam.AliveChars.Count;
+                Debug.Log("Enemy count: " + count);
+                if (count <= 2)
+                {
+                    BattleSystem.DelayInput(BattleSystem.instance.NewEnemyAutoPos("S2_Pierrot_Bat2", null));
+                }
+                else
+                {
+                    BattleSystem.DelayInput(BattleSystem.instance.NewEnemyAutoPos("S2_Ballon", null));
+                }
                 return false;
             }
         }
@@ -626,39 +614,90 @@ namespace BossChanges
         //    }
         //}
 
-        //Bomber Clown AI: summon regardless of enemy count
-        [HarmonyPatch(typeof(AI_BomeClown))]
-        class BombClownAIPatch
-        {
-            [HarmonyPatch(nameof(AI_BomeClown.SkillSelect))]
-            [HarmonyPrefix]
-            static bool Prefix(AI_BomeClown __instance, int ActionCount, ref Skill __result)
-            {
-                if (ActionCount == 0)
-                {
-                    if (BattleSystem.instance.TurnNum == 1 || BattleSystem.instance.TurnNum == 4 || BattleSystem.instance.TurnNum == 7)
-                    {
-                        __result = __instance.BChar.Skills[1]; //summon
-                    }
-                    else
-                    {
-                        __result = __instance.BChar.Skills[2]; //burn debuff
-                    }
-                }
+        ////Bomber Clown AI: summon regardless of enemy count
+        //[HarmonyPatch(typeof(AI_BomeClown))]
+        //class BombClownAIPatch
+        //{
+        //    [HarmonyPatch(nameof(AI_BomeClown.SkillSelect))]
+        //    [HarmonyPrefix]
+        //    static bool Prefix(AI_BomeClown __instance, int ActionCount, ref Skill __result)
+        //    {
+        //        if (ActionCount == 0)
+        //        {
+        //            if (BattleSystem.instance.TurnNum == 1 || BattleSystem.instance.TurnNum == 4 || BattleSystem.instance.TurnNum == 7)
+        //            {
+        //                __result = __instance.BChar.Skills[1]; //summon
+        //            }
+        //            else
+        //            {
+        //                __result = __instance.BChar.Skills[2]; //burn debuff
+        //            }
+        //        }
 
+        //        else
+        //        {
+        //            if (ActionCount == 1 || ActionCount == 2)
+        //            {
+        //                __result = __instance.BChar.Skills[0]; //bombs away
+        //            }
+        //            else
+        //            {
+        //                __result = __instance.SkillSelect(ActionCount);
+        //            }
+        //        }
+
+        //        return false;
+        //    }
+        //}
+
+        // Shiranui: Dance of Flame now lowers stats
+        [HarmonyPatch(typeof(B_Shiranui_3_T))]
+        class FlameDancePatch
+        {
+            [HarmonyPatch(nameof(B_Shiranui_3_T.Init))]
+            [HarmonyPostfix]
+            static void Postfix(B_Shiranui_3_T __instance)
+            {
+                __instance.PlusPerStat.Heal = -20;
+            }
+        }
+
+        // Void Summon: Void Bursts immediately
+        //[HarmonyPatch(typeof(AI_ProgramMaster_0))]
+        //class VoidPatch
+        //{
+        //    [HarmonyPatch(nameof(AI_ProgramMaster_0.SkillSelect))]
+        //    [HarmonyPrefix]
+        //    static bool Prefix(AI_ProgramMaster_0 __instance, ref Skill __result)
+        //    {
+        //        __result = __instance.BChar.Skills[1];
+        //        return false;
+        //    }
+        //}
+
+        //Gambler: cannot use gamble battle twice in the same turn
+       [HarmonyPatch(typeof(AI_TheDealer))]
+        class TheDealerPatch
+        {
+            [HarmonyPatch(nameof(AI_TheDealer.SkillSelect))]
+            [HarmonyPostfix]
+            static void Postfix(int ActionCount, AI_ProgramMaster_0 __instance, ref Skill __result)
+            {
+                List<Skill> skillList = new List<Skill> { __instance.BChar.Skills[1], __instance.BChar.Skills[2], __instance.BChar.Skills[3] };
+                if (BattleSystem.instance.TurnNum == 1)
+                {
+                    //if (ActionCount > 1)
+                    //{
+                    //    __result = skillList.Random();
+                    //}
+                }
                 else
                 {
-                    if (ActionCount == 1 || ActionCount == 2)
+                    if (ActionCount > 3)
                     {
-                        __result = __instance.BChar.Skills[0]; //bombs away
-                    }
-                    else
-                    {
-                        __result = __instance.SkillSelect(ActionCount);
+                        __result = null;
                     }
                 }
-
-                return false;
             }
         }
 
@@ -952,6 +991,7 @@ namespace BossChanges
                         {
                             __instance.BChar.BuffScriptReturn("Common_Buff_EnemyTaunt").SelfDestroy(false);
                         }
+                        reaperCount++;
                         break;
                     case 1:
                         BattleSystem.instance.StartCoroutine(BattleSystem.instance.NewEnemyAutoPos(GDEItemKeys.Enemy_S3_Deathbringer, null));
@@ -959,10 +999,12 @@ namespace BossChanges
                         {
                             __instance.BChar.BuffScriptReturn("Common_Buff_EnemyTaunt").SelfDestroy(false);
                         }
+                        reaperCount++;
                         break;
                     case 2:
                         BattleSystem.instance.StartCoroutine(BattleSystem.instance.NewEnemyAutoPos(GDEItemKeys.Enemy_S3_Pharos_HighPriest, null));
                         __instance.BChar.BuffAdd(GDEItemKeys.Buff_B_EnemyTaunt, __instance.BChar, false, 0, false, -1, false);
+                        reaperCount++;
                         break;
                     default:
                         return false;
@@ -1479,6 +1521,26 @@ namespace BossChanges
                     SkillD.Except();
                 }
                 return false;
+            }
+        }
+
+        // Program Master
+
+        [HarmonyPatch(typeof(P_ProgramMaster_LucyAttack))]
+        class Stance_patch
+        {
+            [HarmonyPatch(nameof(P_ProgramMaster_LucyAttack.Init))]
+            [HarmonyPostfix]
+            static void Postfix(P_ProgramMaster_LucyAttack __instance)
+            {
+                __instance.HP = 150;
+            }
+
+            [HarmonyPatch(nameof(P_ProgramMaster_LucyAttack.Turn))]
+            [HarmonyPostfix]
+            static void Postfix2(P_ProgramMaster_LucyAttack __instance)
+            {
+                __instance.HP = 150;
             }
         }
 

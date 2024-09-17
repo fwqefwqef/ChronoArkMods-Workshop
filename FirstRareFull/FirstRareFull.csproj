@@ -35,26 +35,16 @@
       <HintPath>..\windymod\Libraries\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>..\windymod\Libraries\BepInEx.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\..\..\..\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\netstandard.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\IRA\IRA_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\IRA\IRA_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Steam\steamapps\common\Chrono Ark\ChronoArk_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +53,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "C:\Users\sjkim\Desktop\Workshop\SteamWorkshopUploader_2\WorkshopContent\FirstRareFull\Assemblies"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "C:\Users\sjkim\Desktop\me\Chrono Ark\chrono ark modding\Workshop\SteamWorkshopUploader_2\WorkshopContent\FirstRareFull\Assemblies"
+copy /Y "$(TargetPath)" "C:\Steam\steamapps\workshop\content\1188930\3017552102\Assemblies"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

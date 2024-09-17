@@ -1,6 +1,4 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using GameDataEditor;
+﻿using GameDataEditor;
 using HarmonyLib;
 using I2.Loc;
 using System;
@@ -58,7 +56,7 @@ namespace FirstRareFull
                             {
                                 while (enumerator.MoveNext())
                                 {
-                                    if (enumerator.Current.Skill.Rare)
+                                    if (enumerator.Current.SkillInfo.Rare)
                                     {
                                         flag = true;
                                     }
@@ -71,7 +69,7 @@ namespace FirstRareFull
                         }
                         if (!flag)
                         {
-                            // Changed Here
+                            // Changed Here 
                             List<GDESkillData> gdeskillData = PlayData.GetMySkills(PlayData.TSavedata.Party[i].KeyData, true).GroupBy(x => x.KeyID).Select(x => x.First()).ToList();
                             if (gdeskillData != null)
                             {

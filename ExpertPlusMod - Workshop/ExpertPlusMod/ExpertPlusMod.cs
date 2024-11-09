@@ -31,6 +31,9 @@ namespace ExpertPlusMod
         public static bool CursedBosses = false;
         public static bool ChaosMode = false;
         public static bool EnableBossChanges = false;
+        public static bool ExpertPlusPlus = false;
+
+        public static string json = "";
 
         public override void Initialize()
         {
@@ -41,6 +44,7 @@ namespace ExpertPlusMod
             CursedBosses = modInfo.GetSetting<ToggleSetting>("CursedBosses").Value;
             ChaosMode = modInfo.GetSetting<ToggleSetting>("ChaosMode").Value;
             EnableBossChanges = modInfo.GetSetting<ToggleSetting>("EnableBossChanges").Value;
+            ExpertPlusPlus = modInfo.GetSetting<ToggleSetting>("ExpertPlusPlus").Value;
 
             this.harmony = new Harmony(base.GetGuid());
             this.harmony.PatchAll();
@@ -506,10 +510,69 @@ namespace ExpertPlusMod
                     }
                 }
                 dataString = Json.Serialize(masterJson);
+                json = dataString;
             }
         }
 
-        // add starting items
+        // Exp++: Add global stat buff, attack power, armor
+        [HarmonyPatch(typeof(GDEDataManager), nameof(GDEDataManager.InitFromText))]
+        class ModifyGData2
+        {
+            static void Prefix(ref string dataString)
+            {
+
+                    Dictionary<string, object> masterJson = (Json.Deserialize(dataString) as Dictionary<string, object>);
+                    foreach (var e in masterJson)
+                    {
+                        if (((Dictionary<string, object>)e.Value).ContainsKey("_gdeSchema"))
+                        {
+                            if (((Dictionary<string, object>)e.Value)["_gdeSchema"].Equals("Enemy"))
+                            {
+                                if (ExpertPlusPlus)
+                                {
+                                    (masterJson[e.Key] as Dictionary<string, object>)["atk"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["atk"] * 1.1);
+                                    (masterJson[e.Key] as Dictionary<string, object>)["reg"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["reg"] * 2);
+                                    (masterJson[e.Key] as Dictionary<string, object>)["maxhp"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["maxhp"] * 1.1);
+                                }
+                            }
+                        }
+                    }
+                    dataString = Json.Serialize(masterJson);
+                    json = dataString;
+                
+
+            }
+        }
+
+        // Boost stats further at BM4c
+        //[HarmonyPatch(typeof(BloodyMist), nameof(BloodyMist.IncreaseLevel))]
+        //class BMist4Stats
+        //{
+        //    static void Postfix(BloodyMist __instance)
+        //    {
+        //        if (__instance.Level == 4)
+        //        {
+        //            Dictionary<string, object> masterJson = (Json.Deserialize(json) as Dictionary<string, object>);
+        //            foreach (var e in masterJson)
+        //            {
+        //                if (((Dictionary<string, object>)e.Value).ContainsKey("_gdeSchema"))
+        //                {
+        //                    if (((Dictionary<string, object>)e.Value)["_gdeSchema"].Equals("Enemy"))
+        //                    {
+        //                        (masterJson[e.Key] as Dictionary<string, object>)["atk"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["atk"] * 1.1);
+        //                        (masterJson[e.Key] as Dictionary<string, object>)["reg"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["reg"] * 2);
+        //                        (masterJson[e.Key] as Dictionary<string, object>)["maxhp"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["maxhp"] * 1.1);
+        //                    }
+        //                }
+        //            }
+        //            json = Json.Serialize(masterJson);
+        //            var initMethod = AccessTools.Method(typeof(GDEDataManager), nameof(GDEDataManager.InitFromText), new Type[] { typeof(string) });
+        //            initMethod.Invoke(null, new object[] { json });
+        //        }
+        //    }
+        //}
+
+        // add starting items: dummy data, transcendent
         [HarmonyPatch(typeof(FieldSystem))]
         class FieldSystem_Patch
         {
@@ -535,7 +598,14 @@ namespace ExpertPlusMod
                 if (CursedBosses && DespairMode && PlayData.TSavedata.StageNum == 0)
                 {
                     PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Consume_EquipPouch, 1));
-                    PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Consume_SkillBookLucy_Rare, 3));
+                    if (ExpertPlusPlus)
+                    {
+                        PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Consume_SkillBookLucy_Rare, 2));
+                    }
+                    else
+                    {
+                        PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Consume_SkillBookLucy_Rare, 3));
+                    }
 
                     // identifies transfer scroll
                     if (PlayData.TSavedata.IdentifyItems.Find((string x) => x == GDEItemKeys.Item_Scroll_Scroll_Transfer) == null)
@@ -544,6 +614,41 @@ namespace ExpertPlusMod
                     }
                     PartyInventory.InvenM.AddNewItem(ItemBase.GetItem(GDEItemKeys.Item_Scroll_Scroll_Transfer, 1));
                 }
+
+            }
+        }
+
+        // Decisive Strike Desc Manual Patch
+        [HarmonyPatch(typeof(S_Lucy_25))]
+        class S_Lucy_25_Patch
+        {
+            [HarmonyPatch(nameof(S_Lucy_25.HandInit))]
+            [HarmonyPrefix]
+            static bool Prefix(S_Lucy_25 __instance)
+            {
+                Debug.Log("Decisive Strike Desc");
+                string language = LocalizationManager.CurrentLanguage;
+                if (language == "Korean")
+                {
+                    __instance.MySkill.MySkill.Description = "적의 체력을 0으로 만듭니다.\n대상이 보스일경우에는, 보스의 체력이 40 % 이하일 때 사용 가능합니다.\n1지역 클리어 할 때 마다 비용이 1 증가합니다.\n<b>사용하면 덱에서 제거</b> 됩니다.\n(이 스킬은 '소원에 샘' 이외의 방법으로 얻을 수 없습니다)";
+                }
+                else if (language == "English")
+                {
+                    __instance.MySkill.MySkill.Description = "Reduce the target's HP to 0.\nBosses can be killed at 40% HP.\nCost is increased by 1 per stage cleared.\n<b>Removed from deck when used.</b>\n(This skill can only be obtained in Fountain of Wishes.)";
+                }
+                else if (language == "Japanese")
+                {
+                    __instance.MySkill.MySkill.Description = "敵の体力を0にする。\nターゲットがボスキャラクターの場合、体力40%以下で使用できる。\nこのスキルのコストはエリアをクリアする度、1上がる。\n<b>このスキルは、使用するとデッキから削除</b>される。\n(このスキルは「願いの泉」でしか習得できない。)";
+                }
+                else if (language == "Chinese")
+                {
+                    __instance.MySkill.MySkill.Description = "将敌人的体力值变为0点。\n若目标是BOSS，当目标体力值降到40%及以下时立即死亡。\n每当通过1个区域时费用增加1点。\n<b>使用后将从牌库中放逐。</b>\n（此技能无法通过‘许愿泉水’以外的方式获得。）";
+                }
+                else if (language == "Chinese-TW")
+                {
+                    __instance.MySkill.MySkill.Description = "將敵人的體力值變成0點。\n若目標是BOSS，當目標體力值降到40%及以下時立即死亡。\n每當通過1個區域時費用增加1點。\n<b>使用後將從牌庫中放逐。 </b>\n（此技能無法通過「許願泉水」以外的方式獲得。）";
+                }
+                return true;
             }
         }
 
@@ -583,15 +688,16 @@ namespace ExpertPlusMod
             }
         }
 
-        // Chaos Mode Randomization 
+        // Chaos Mode Randomization  
         static List<string> tier1 = new List<string>() { "S1_Statue1", "S1_Dochi", "S1_Maid", "S1_Table", "S1_Statue2", "S1_Pharos_Mage", "S1_Pharos_Healer", "S1_Pharos_Tanker", "S1_LittleMaid" };
         static List<string> tier2 = new List<string>() { "S1_Statue1", "S1_Dochi", "S1_Maid", "S1_Statue2", "S1_Pharos_Mage", "S1_Pharos_Tanker", "S1_LittleMaid", "S1_Butler", "S1_Pharos_Warrior" };
         static List<string> tier3 = new List<string>() { "S2_Pierrot_Bat", "S2_DochiDoll", "S2_Horse", "S2_Pierrot_Axe", "S2_Ghost", "S1_Pharos_Warrior", "S2_Pharos_Healer", "S2_Pharos_Mage" };
         static List<string> tier4 = new List<string>() { "S2_Pierrot_Bat", "S2_Horse", "S2_Pierrot_Axe", "S2_Pharos_Mage", "S2_PharosWitch", "S2_Pharos_Warrior", "S2_Pharos_Tanker", "SR_Gunner", "S1_Carpenterdoll", "S3_Wolf" };
-        static List<string> tier5 = new List<string>() { "S3_SnowGiant_0", "S3_Pharos_Tanker", "S3_Pharos_HighPriest", "S3_Pharos_Assassin", "S3_Fugitive", "SR_Samurai", "S2_Animatronics" };
-        static List<string> tier6 = new List<string>() { "S4_MagicDochi", "S4_AngryDochi", "S4_Summoner", "S1_Armor", "S3_Deathbringer" };
-        static List<string>[] tiers = { tier1, tier2, tier3, tier4, tier5, tier6 };
-        static string Randomize(string key, bool upscale)
+        static List<string> tier5 = new List<string>() { "S3_SnowGiant_0", "S3_Pharos_Tanker", "S3_Pharos_HighPriest", "S3_Pharos_Assassin", "S2_Animatronics" };
+        static List<string> tier6 = new List<string>() { "S4_MagicDochi", "S4_AngryDochi", "S4_Summoner", "S1_Armor", "S3_Deathbringer", "S3_Fugitive", "SR_Samurai", "S4_Guard_0_Solo", "S4_Guard_1_Solo", "S4_Guard_2_Solo", "MBoss_0_R" };
+        static List<string> tier7 = new List<string>() { "SR_GuitarList", "SR_Shotgun", "SR_Blade"};
+        static List<string>[] tiers = { tier1, tier2, tier3, tier4, tier5, tier6, tier7 };
+        static string Randomize(string key, int upscale)
         {
             int j = PlayData.TSavedata.StageNum;
             for (int i = j; i < tiers.Length; i++)
@@ -600,13 +706,26 @@ namespace ExpertPlusMod
                 {
                     if (enemy == key)
                     {
-                        if (upscale)
+                        if (upscale == 1)
                         {
                             if (i == tiers.Length - 1)
                             {
                                 return tiers[i].Random();
                             }
                             return tiers[i + 1].Random();
+                        }
+
+                        else if (upscale == 2)
+                        {
+                            if (i == tiers.Length - 1)
+                            {
+                                return tiers[i].Random();
+                            }
+                            else if (i == tiers.Length - 2)
+                            {
+                                return tiers[i + 1].Random();
+                            }
+                            return tiers[i + 2].Random();
                         }
 
                         else
@@ -636,10 +755,10 @@ namespace ExpertPlusMod
                     {
                         Debug.Log("Summoning " + enemyKey + ", unchanged = curse");
                     }
-                    else if (__instance.BossBattle) // this is not working currently
-                    {
-                        Debug.Log("Summoning " + enemyKey + ", unchanged = boss battle");
-                    }
+                    //else if (__instance.BossBattle) // this is not working currently
+                    //{
+                    //    Debug.Log("Summoning " + enemyKey + ", unchanged = boss battle");
+                    //}
                     else
                     {
                         // Roll dice
@@ -650,14 +769,20 @@ namespace ExpertPlusMod
                         if (a <= 20)
                         {
                             Debug.Log("Randomizing " + enemyKey + ", same tier");
-                            enemyKey = Randomize(enemyKey, false);
+                            enemyKey = Randomize(enemyKey, 0);
                             Debug.Log("Summoning " + enemyKey);
                         }
                         // change within higher tier
                         else if (a <= 40)
                         {
-                            Debug.Log("Randomizing " + enemyKey + ", upscaled");
-                            enemyKey = Randomize(enemyKey, true);
+                            Debug.Log("Randomizing " + enemyKey + ", upscaled 1");
+                            enemyKey = Randomize(enemyKey, 1);
+                            Debug.Log("Summoning " + enemyKey);
+                        }
+                        else if (ExpertPlusPlus && a <= 55)
+                        {
+                            Debug.Log("Randomizing " + enemyKey + ", upscaled 2");
+                            enemyKey = Randomize(enemyKey, 2);
                             Debug.Log("Summoning " + enemyKey);
                         }
                         // else don't change enemydata
@@ -683,7 +808,8 @@ namespace ExpertPlusMod
                 if (CursedBosses)
                 {
                     // Marauding & Executioner Ban
-                    if (gdeenemyData.Boss == true && (gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster || gdeenemyData.Key == GDEItemKeys.Enemy_Boss_Golem || gdeenemyData.Key == "TheDealer" || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster2 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_Shiranui || gdeenemyData.Key == "S3_Boss_Reaper" || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_0 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_1 ))
+                    if (gdeenemyData.Boss == true && (gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster || gdeenemyData.Key == GDEItemKeys.Enemy_SR_GunManBoss || gdeenemyData.Key == GDEItemKeys.Enemy_Boss_Golem || gdeenemyData.Key == "TheDealer" || gdeenemyData.Key == GDEItemKeys.Enemy_ProgramMaster2 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_Shiranui || gdeenemyData.Key == "S3_Boss_Reaper" 
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_0 || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_1 || gdeenemyData.Key == GDEItemKeys.Enemy_S4_King_0))
                     {
                         List<string> list = new List<string> { "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
                         string curse = list.Random();
@@ -691,9 +817,17 @@ namespace ExpertPlusMod
                         component.BuffAdd(curse, component, false, 0, false, -1, false);
                     }
                     // Marauding Ban
-                    else if (gdeenemyData.Boss == true && (gdeenemyData.Key == "S1_WitchBoss"))
+                    else if (gdeenemyData.Boss == true && (gdeenemyData.Key == "S1_WitchBoss" || gdeenemyData.Key == GDEItemKeys.Enemy_S1_BossDorchiX))
                     {
                         List<string> list = new List<string> { "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_4", "B_CursedMob_5" };
+                        string curse = list.Random();
+                        Debug.Log("Boss curse: " + curse);
+                        component.BuffAdd(curse, component, false, 0, false, -1, false);
+                    }
+                    // Horrifying Ban
+                    else if (gdeenemyData.Boss == true && (gdeenemyData.Key == "S1_ArmorBoss" || gdeenemyData.Key == "MBoss_0" || gdeenemyData.Key == GDEItemKeys.Enemy_S2_MainBoss_1_1))
+                    {
+                        List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_4", "B_CursedMob_5" };
                         string curse = list.Random();
                         Debug.Log("Boss curse: " + curse);
                         component.BuffAdd(curse, component, false, 0, false, -1, false);
@@ -701,9 +835,9 @@ namespace ExpertPlusMod
                     //Executioner Ban
                     else if (gdeenemyData.Boss == true && ( 
                         gdeenemyData.Key == GDEItemKeys.Enemy_S1_BossDorchiX || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_0
-                        || gdeenemyData.Key == GDEItemKeys.Enemy_SR_GunManBoss || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_1
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_MBoss2_1
                         || gdeenemyData.Key == GDEItemKeys.Enemy_S3_Boss_Pope || gdeenemyData.Key == GDEItemKeys.Enemy_S3_Boss_TheLight 
-                        || gdeenemyData.Key == GDEItemKeys.Enemy_S4_King_0 || gdeenemyData.Key == GDEItemKeys.Enemy_LBossFirst))
+                        || gdeenemyData.Key == GDEItemKeys.Enemy_LBossFirst))
                     {
                         List<string> list = new List<string> { "B_CursedMob_0", "B_CursedMob_1", "B_CursedMob_2", "B_CursedMob_3", "B_CursedMob_5" };
                         string curse = list.Random();
@@ -732,6 +866,12 @@ namespace ExpertPlusMod
                     }
                 }
                 // end of edit
+                if (ExpertPlusPlus && PlayData.TSavedata.bMist != null && PlayData.TSavedata.bMist.Level == 4 )
+                {
+                    component.BuffAdd("B_Mist4Buff", component);
+                    Debug.Log("Added hidden buff"); 
+                }
+
                 if (__instance.BossBattle && !component.Boss)
                 {
                     Pos -= new Vector3(0f, 0f, 0.3f);
@@ -1035,6 +1175,13 @@ namespace ExpertPlusMod
                     //__instance.PlusPerStat.Damage = __instance.PlusPerStat.Damage + 40;
                     //__instance.BChar.Info.PlusActCount.Remove(1);
                 }
+                if (ExpertPlusPlus)
+                {
+                    __instance.PlusStat.hit = __instance.PlusStat.hit + 15;
+                    __instance.PlusStat.HIT_CC = __instance.PlusStat.HIT_CC + 15;
+                    __instance.PlusStat.HIT_DEBUFF = __instance.PlusStat.HIT_DEBUFF + 15;
+                    __instance.PlusStat.HIT_DOT = __instance.PlusStat.HIT_DOT + 15;
+                }
 
                 //Gold reward reduced to 50
                 if (___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold) > 0)
@@ -1047,21 +1194,44 @@ namespace ExpertPlusMod
                 // Cursed Boss: Heroic or Legendary Equip
                 if ((__instance.BChar as BattleEnemy).Boss)
                 {
-                    ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold);
-                    ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse);
-                    Random rand = new Random();
-                    int a = rand.Next(1, 3); // 1-2
-                    __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul,3));
-                    if (a == 1)
+                    if (ExpertPlusPlus)
                     {
-                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold);
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse);
+
+                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                        __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul, 3));
+
+                        Random rand = new Random();
+                        int a = rand.Next(1, 3); // 1-2
+                        if (a == 1)
+                        {
+                            __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Consume_RedHammer));
+                        }
+                        else
+                        {
+
+                        }
+                        return;
                     }
                     else
                     {
-                        ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
-                        __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Consume_RedHammer));
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Misc_Gold);
+                        ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse);
+                        Random rand = new Random();
+                        int a = rand.Next(1, 3); // 1-2
+                        __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul, 3));
+                        if (a == 1)
+                        {
+                            ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(4)));
+                        }
+                        else
+                        {
+                            ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                            __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Consume_RedHammer));
+                        }
+                        return;
                     }
-                    return;
                 }
 
                 bool flag = false;
@@ -1277,44 +1447,6 @@ namespace ExpertPlusMod
             }
         }
 
-        [HarmonyPatch(typeof(S_Lucy_25), "DamageChange")]
-        class DecisivePatch2
-        {
-            static bool Prefix(Skill SkillD, BattleChar Target, int Damage, ref bool Cri, bool View, S_Lucy_25 __instance, ref int __result)
-            {
-                if (View)
-                {
-                    __result = Damage;
-                }
-                if (Target is BattleEnemy)
-                {
-                    if ((Target as BattleEnemy).Boss)
-                    {
-                        if (40f >= Misc.NumToPer((float)Target.GetStat.maxhp, (float)Target.HP))
-                        {
-                            Target.BuffRemove("B_DuelistWill");
-                            Target.BuffRemove("B_DuelistWill_0");
-                            Target.BuffRemove("B_LastResistance");
-                            Target.HPToZero();
-                            __result = 0;
-                            return false;
-                        }
-                    }
-                    else if (100f >= Misc.NumToPer((float)Target.GetStat.maxhp, (float)Target.HP))
-                    {
-                        Target.BuffRemove("B_DuelistWill");
-                        Target.BuffRemove("B_DuelistWill_0");
-                        Target.BuffRemove("B_LastResistance");
-                        Target.HPToZero();
-                        __result = 0;
-                        return false;
-                    }
-                }
-                __result = Damage;
-                return false;
-            }
-        }
-
 
         // Crimson Boss Battle: Spawn Decisive Strike
         [HarmonyPatch(typeof(B_Sniper_0), nameof(B_Sniper_0.Turn1))]
@@ -1322,7 +1454,7 @@ namespace ExpertPlusMod
         {
             static bool Prefix(B_Sniper_0 __instance)
             {
-                if (DespairMode)
+                if (DespairMode && !ExpertPlusPlus)
                 {
                     if (BattleSystem.instance.TurnNum == 1)
                     {
@@ -1364,6 +1496,25 @@ namespace ExpertPlusMod
             }
         }
 
+        // Expertplusplus: despawn campfire
+        [HarmonyPatch(typeof(StageSystem), "IsoSetEventObject")]
+        class RWCamp
+        {
+            [HarmonyPrefix]
+            static bool Prefix(HexMap hexmap, int i)
+            {
+                if (ExpertPlusPlus)
+                {
+                    if (hexmap.EventTileList[i].Info.Type is Redwilder_Camp)
+                    {
+                        Debug.Log("Attempt Crimson Camp despawn");
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
         // Time Trial: time adjusted
         [HarmonyPatch(typeof(EventBattle_TrialofTime), "SetTimer")]
 
@@ -1384,11 +1535,25 @@ namespace ExpertPlusMod
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_Witch)
                     {
-                        result = 420f;
+                        if (PlayData.TSavedata.SwordSanctuary)
+                        {
+                            result = 400f;
+                        }
+                        else
+                        {
+                            result = 200f;
+                        }
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_Golem)
                     {
-                        result = 420f;
+                        if (PlayData.TSavedata.SwordSanctuary)
+                        {
+                            result = 400f;
+                        }
+                        else
+                        {
+                            result = 200f;
+                        }
                     }
                     else if (BattleSystem.instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_Queue_DorchiX)
                     {
@@ -1687,6 +1852,19 @@ namespace ExpertPlusMod
             }
         }
 
+        [HarmonyPatch(typeof(AI_ProgramMaster), "SpeedChange")]
+        class DoubleEradicatePatch
+        {
+            [HarmonyPostfix]
+            static void Postfix(Skill skill, int ActionCount, int OriginSpeed, AI_ProgramMaster __instance, ref int __result)
+            {
+                if (BattleSystem.instance.TurnNum == 1 && ActionCount == 2)
+                {
+                    __result = OriginSpeed;
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(AI_Boss_Reaper))]
         class Reaper_patch
         {
@@ -1885,6 +2063,65 @@ namespace ExpertPlusMod
                     if (battleEnemy.BuffFind(GDEItemKeys.Buff_P_Guard_LifeShare, false))
                     {
                         battleEnemy.BuffReturn(GDEItemKeys.Buff_P_Guard_LifeShare).PlusStat.maxhp = 0;
+                    }
+                }
+            }
+        }
+
+        // Fixes Ruby Sapphire Cursed HP
+        [HarmonyPatch(typeof(BattleTeam), nameof(BattleTeam.MyTurn))]
+        class TwinsMaxHpPatch
+        {
+            static void Postfix()
+            {
+                if (BattleSystem.instance != null)
+                {
+                    if (BattleSystem.instance.TurnNum == 0)
+                    {
+                        List<float> linkMaxHps = new List<float>();
+                        foreach (BattleEnemy battleEnemy in BattleSystem.instance.EnemyList)
+                        {
+                            if (battleEnemy.BuffFind("B_S2_MainBoss_1_Right_P", false) || battleEnemy.BuffFind("B_S2_MainBoss_1_Left_P", false))
+                            {
+                                linkMaxHps.Add((float)battleEnemy.Info.get_stat.maxhp);
+                            }
+                        }
+
+                        if (linkMaxHps.Count > 0)
+                        {
+                            int avgMaxHp = (int)linkMaxHps.Average();
+                            //Debug.Log(avgMaxHp);
+                            foreach (BattleEnemy battleEnemy in BattleSystem.instance.EnemyList)
+                            {
+                                if (battleEnemy.BuffFind("B_S2_MainBoss_1_Right_P", false))
+                                {
+                                    battleEnemy.BuffReturn("B_S2_MainBoss_1_Right_P").PlusStat.maxhp += avgMaxHp - battleEnemy.Info.get_stat.maxhp;
+                                }
+                                if (battleEnemy.BuffFind("B_S2_MainBoss_1_Left_P", false)) {
+                                    battleEnemy.BuffReturn("B_S2_MainBoss_1_Left_P").PlusStat.maxhp += avgMaxHp - battleEnemy.Info.get_stat.maxhp;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // reset max hp modification on in case of uncurse
+        [HarmonyPatch(typeof(SkillExtended_UnCurse), nameof(SkillExtended_UnCurse.SkillUseSingle))]
+        class UncurseCardPatch2
+        {
+            static void Prefix()
+            {
+                foreach (BattleEnemy battleEnemy in BattleSystem.instance.EnemyList)
+                {
+                    if (battleEnemy.BuffFind("B_S2_MainBoss_1_Right_P", false))
+                    {
+                        battleEnemy.BuffReturn("B_S2_MainBoss_1_Right_P").PlusStat.maxhp = 0;
+                    }
+                    if (battleEnemy.BuffFind("B_S2_MainBoss_1_Left_P", false))
+                    {
+                        battleEnemy.BuffReturn("B_S2_MainBoss_1_Left_P").PlusStat.maxhp = 0;
                     }
                 }
             }
@@ -2228,26 +2465,34 @@ namespace ExpertPlusMod
                 {
                     cleartext = ScriptLocalization.System_Mode.BloodyMist + " " + PlayData.TSavedata.bMist.Level.ToString() + "\n" + cleartext;
                 }
-                if (DespairMode)
+                if (ExpertPlusPlus)
                 {
-                    cleartext += "\n+Despair Mode";
+                    cleartext += "\n+ExpertPlusPlus";
                 }
-                //if (PermaMode)
-                //{
-                //    cleartext += "\n+Permadeath Mode";
-                //}
-                if (VanillaCurses)
+                else
                 {
-                    cleartext += "\n+Vanilla Curses";
+                    if (DespairMode)
+                    {
+                        cleartext += "\n+Despair Mode";
+                    }
+                    //if (PermaMode)
+                    //{
+                    //    cleartext += "\n+Permadeath Mode";
+                    //}
+                    if (VanillaCurses)
+                    {
+                        cleartext += "\n+Vanilla Curses";
+                    }
+                    if (CursedBosses)
+                    {
+                        cleartext += "\n+Cursed Bosses";
+                    }
+                    if (ChaosMode)
+                    {
+                        cleartext += "\n+Chaos Mode";
+                    }
                 }
-                if (CursedBosses)
-                {
-                    cleartext += "\n+Cursed Bosses";
-                }
-                if (ChaosMode)
-                {
-                    cleartext += "\n+Chaos Mode";
-                }
+
                 __instance.BloodyMistText.text = cleartext;
                 List<string> list2 = new List<string>();
                 string text = "";
@@ -2269,7 +2514,11 @@ namespace ExpertPlusMod
                 }
                 if (ChaosMode)
                 {
-                    list2.Add("<b>Chaos Mode</b>\nEnemies gain a low chance to mutate into enemies from the same stage or next stage.\nDoes not trigger for Cursed mobs or Boss fights.");
+                    list2.Add("<b>Chaos Mode</b>\nEnemies gain a low chance to mutate into enemies from the same stage or next stage.\nDoes not trigger for Cursed mobs or Boss fights.\n");
+                }
+                if (ExpertPlusPlus)
+                {
+                    list2.Add("<b>ExpertPlusPlus</b>\nAre you a masochist?");
                 }
                 for (int l = 0; l < list2.Count; l++)
                 {
@@ -2464,7 +2713,6 @@ namespace ExpertPlusMod
         //    }
         //}
 
-        // Reset Sanctuary final boss to tfk
         [HarmonyPatch(typeof(DataCollectMgr), "GameEnd")]
         class ResetBoss
         {
@@ -2482,10 +2730,36 @@ namespace ExpertPlusMod
                         {
                             BanSave.BanCharacterKeys.Add(character.KeyData);
                             Debug.Log("Added " + character.KeyData);
+
+                            if (ExpertPlusPlus)
+                            {
+                                BanSave.BanCharacterKeys.Add(character.KeyData+"+");
+                                Debug.Log("Added " + character.KeyData);
+                            }
                         }
                         BanSave.WriteBanKeys();
                     }
                 }
+
+                //if (PlayData.TSavedata.bMist.Level == 4)
+                //{
+                //    Dictionary<string, object> masterJson = (Json.Deserialize(json) as Dictionary<string, object>);
+                //    foreach (var e in masterJson)
+                //    {
+                //        if (((Dictionary<string, object>)e.Value).ContainsKey("_gdeSchema"))
+                //        {
+                //            if (((Dictionary<string, object>)e.Value)["_gdeSchema"].Equals("Enemy"))
+                //            {
+                //                (masterJson[e.Key] as Dictionary<string, object>)["atk"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["atk"] / 1.1);
+                //                (masterJson[e.Key] as Dictionary<string, object>)["reg"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["reg"] / 2);
+                //                (masterJson[e.Key] as Dictionary<string, object>)["maxhp"] = (long)((long)(masterJson[e.Key] as Dictionary<string, object>)["maxhp"] / 1.1);
+                //            }
+                //        }
+                //    }
+                //    json = Json.Serialize(masterJson);
+                //    var initMethod = AccessTools.Method(typeof(GDEDataManager), nameof(GDEDataManager.InitFromText), new Type[] { typeof(string) });
+                //    initMethod.Invoke(null, new object[] { json });
+                //}
             }
         }
         // Despair Mode Blood Mist 4 End //
@@ -2497,7 +2771,22 @@ namespace ExpertPlusMod
             [HarmonyPostfix]
             static void Postfix(CharSelectButtonV2 __instance)
             {
-                if (BanSave.BanCharacterKeys.Contains(__instance.data.Key))
+                string plus = __instance.data.Key + "+"; // Expert++ Clear
+                if (BanSave.BanCharacterKeys.Contains(plus))
+                {
+                    __instance.ClearIcon.gameObject.SetActive(false);
+
+                    GameObject gameObject = Utils.creatGameObject("border", __instance.transform);
+                    Image bg = gameObject.AddComponent<Image>();
+                    Utils.getSprite("red.png", bg);
+                    Utils.ImageResize(bg, new Vector2(120f, 165f), Vector2.zero);
+                    __instance.ClearIcon = bg;
+                    __instance.ClearIcon.sprite = bg.sprite;
+                    __instance.ClearIcon.gameObject.SetActive(true);
+
+                    Debug.Log("border switch attempted");
+                }
+                else if (BanSave.BanCharacterKeys.Contains(__instance.data.Key))
                 {
                     __instance.ClearIcon.gameObject.SetActive(false);
 
@@ -2520,13 +2809,17 @@ namespace ExpertPlusMod
             [HarmonyPostfix]
             static void Postfix(CharSelectButtonV2 __instance)
             {
-                if (BanSave.BanCharacterKeys.Contains(__instance.data.Key))
+                string plus = __instance.data.Key + "+"; // Expert++ Clear
+                if (BanSave.BanCharacterKeys.Contains(plus))
+                {
+                    __instance.Box.color = Misc.HexColor("9c3f64");
+                    Debug.Log("Box Color Switch Attempted");
+                }
+                else if (BanSave.BanCharacterKeys.Contains(__instance.data.Key))
                 {
                     //__instance.Box.color = Misc.HexColor("EFB2AB");
                     __instance.Box.color = Misc.HexColor("cdabef");
                     Debug.Log("Box Color Switch Attempted");
-
-
                     //GameObject gameObject = Utils.creatGameObject("line", __instance.transform);
                     //Image line = gameObject.AddComponent<Image>();
                     //Utils.getSprite("redline.png", line);

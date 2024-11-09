@@ -310,6 +310,7 @@ namespace ExpertPlusMod
             {
                 if (ExpertPlusPlugin.DespairMode)
                 {
+                    //
                     if (__instance is B_Witch_P_0)
                     {
                         foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
@@ -351,7 +352,7 @@ namespace ExpertPlusMod
                         }
                     }
 
-                    else if (__instance is P_DorchiX)
+                    if (__instance is P_DorchiX)
                     {
                         //Revive, heal everyone by 400% (100%)
                         foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
@@ -375,13 +376,13 @@ namespace ExpertPlusMod
                         }
                     }
                     
-                    else if (__instance is B_Joker_P_0)
+                    if (__instance is B_Joker_P_0)
                     {
                         // Remove Joker Card from deck
                         RemoveCards("SkillExtended_Joker_0");
                     }
 
-                    else if (__instance is P_S2_MainBoss_1_Left) // || __instance is P_S2_MainBoss_1_Right
+                    if (__instance is P_S2_MainBoss_1_Left) // || __instance is P_S2_MainBoss_1_Right
                     {
                         foreach (BattleChar b in BattleSystem.instance.AllyTeam.Chars)
                         {
@@ -398,29 +399,14 @@ namespace ExpertPlusMod
                         RemoveCards("Extended_S2_MainBoss_1_Lucy_0");
                     }
 
-                    else if (__instance is B_S2_Tank_P)
-                    {
-                        // Kill minion
-                        using (List<BattleEnemy>.Enumerator enumerator2 = BattleSystem.instance.EnemyList.GetEnumerator())
-                        {
-                            while (enumerator2.MoveNext())
-                            {
-                                BattleEnemy battleEnemy3 = enumerator2.Current;
-                                battleEnemy3.Info.Hp = 0;
-                                battleEnemy3.Dead(false, false);
-                            }
-                            return;
-                        }
-                    }
-
-                    else if (__instance is P_BombClown_0)
+                    if (__instance is P_BombClown_0)
                     {
                         // Remove time bombs
                         RemoveCards("S_BombClown_B_0"); 
                     }
                     
                     // timer yeater
-                    else if (__instance is B_MBoss2_1_P)
+                    if (__instance is B_MBoss2_1_P)
                     {
                         RemoveCards("S_LucyCurse_CursedClock");
                         // remove amplify time
@@ -435,7 +421,7 @@ namespace ExpertPlusMod
                         }
                     }
 
-                    else if (__instance is B_S3_Boss_Pope_P_0)
+                    if (__instance is B_S3_Boss_Pope_P_0)
                     {
                         foreach (var bc in BattleSystem.instance.AllyTeam.AliveChars)
                         {
@@ -444,7 +430,7 @@ namespace ExpertPlusMod
                         } 
                     }
 
-                    else if (__instance is TheLight_P_1)
+                    if (__instance is TheLight_P_1)
                     {
                         foreach (var bc in BattleSystem.instance.AllyTeam.AliveChars)
                         {
@@ -455,7 +441,7 @@ namespace ExpertPlusMod
                         RemoveCards("SkillExtended_S_S_TheLight_P_1");
                     }
 
-                    else if (__instance is B_Enemy_Boss_Reaper_P)
+                    if (__instance is B_Enemy_Boss_Reaper_P)
                     {
                         var markTransform = BattleSystem.instance.MainUICanvas.transform.Find("ReaperBossUI(Clone)");
                         if (markTransform != null)
@@ -467,6 +453,21 @@ namespace ExpertPlusMod
                         {
                             while (bc.BuffFind(GDEItemKeys.Buff_B_Enemy_Boss_Reaper_P_0, false))
                                 bc.BuffRemove(GDEItemKeys.Buff_B_Enemy_Boss_Reaper_P_0, true);
+                        }
+                    }
+
+                    // Kill minion
+                    if (__instance is B_S2_Tank_P || __instance is TheLight_P_1 || __instance is B_Joker_P_0 || __instance is B_Enemy_Boss_Reaper_P || __instance is B_S3_Boss_Pope_P_0)
+                    {
+                        using (List<BattleEnemy>.Enumerator enumerator2 = BattleSystem.instance.EnemyList.GetEnumerator())
+                        {
+                            while (enumerator2.MoveNext())
+                            {
+                                BattleEnemy battleEnemy3 = enumerator2.Current;
+                                battleEnemy3.Info.Hp = 0;
+                                battleEnemy3.Dead(false, false);
+                            }
+                            return;
                         }
                     }
                 }

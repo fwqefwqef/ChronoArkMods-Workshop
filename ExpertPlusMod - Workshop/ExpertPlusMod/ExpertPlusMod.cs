@@ -1458,7 +1458,7 @@ namespace ExpertPlusMod
                 {
                     if (BattleSystem.instance.TurnNum == 1)
                     {
-                        for (int i = 0; i < 2; i++)
+                        for (int i = 0; i < 1; i++)
                         {
                             BattleSystem.instance.AllyTeam.Add(Skill.TempSkill(GDEItemKeys.Skill_S_Sniper_1, BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam), true);
                         }

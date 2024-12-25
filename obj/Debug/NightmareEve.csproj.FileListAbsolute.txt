@@ -1,0 +1,12 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\obj\Debug\NightmareEve.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\obj\Debug\NightmareEve.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\obj\Debug\NightmareEve.csproj.CopyComplete
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\0Harmony.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\Mono.Cecil.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\MonoMod.Utils.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\MonoMod.RuntimeDetour.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\NightmareEve1225202455327PM.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\bin\Debug\NightmareEve1225202455327PM.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\obj\Debug\NightmareEve1225202455327PM.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\NightmareEve\obj\Debug\NightmareEve1225202455327PM.pdb

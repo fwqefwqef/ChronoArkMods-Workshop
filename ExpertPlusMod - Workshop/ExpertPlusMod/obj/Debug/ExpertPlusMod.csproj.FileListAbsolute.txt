@@ -125,3 +125,4 @@ C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Uni
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\System.ServiceModel.Internals.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\UnityEngine.AnimationModule.dll
 C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\ExpertPlusMod.dll
+C:\Users\sjkim\source\repos\ExpertPlusMod - Workshop\ExpertPlusMod\bin\Debug\Unity.ResourceManager.dll

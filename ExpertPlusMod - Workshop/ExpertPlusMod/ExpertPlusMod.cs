@@ -372,7 +372,7 @@ namespace ExpertPlusMod
                             if (DespairMode)
                             {
                                 List<string> a = new List<string>();
-                                a.Add("Queue_S3_PharosLeader");
+                                a.Add("S3_Boss_TheLight");
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Lock"] = false;
                                 (masterJson[e.Key] as Dictionary<string, object>)["UseCustomPosition"] = false;
@@ -392,6 +392,30 @@ namespace ExpertPlusMod
                         }
 
                         if (e.Key == "Queue_S3_PharosLeader")
+                        {
+                            if (DespairMode)
+                            {
+                                List<string> a = new List<string>();
+                                a.Add("S3_Boss_TheLight");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Lock"] = false;
+                                (masterJson[e.Key] as Dictionary<string, object>)["UseCustomPosition"] = false;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 99;
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 21;
+
+                                List<string> b = new List<string>();
+                                b.Add("S3_Pharos_HighPriest");
+                                b.Add("S3_Boss_Reaper");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
+                            }
+                            if (DespairMode && CursedBosses)
+                            {
+                                (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 24;
+                            }
+                        }
+
+                        if (e.Key == "Queue_FanaticBoss")
                         {
                             if (DespairMode)
                             {
@@ -1743,10 +1767,6 @@ namespace ExpertPlusMod
         //    }
         //}
 
-        /// <summary>
-        /// Below is Neo's Stuff
-        /// </summary>
-
         // Cursed Bosses: Parade tank cant double kaboom
 
         [HarmonyPatch(typeof(AI_MBoss2_0_0))]
@@ -1967,6 +1987,7 @@ namespace ExpertPlusMod
         //    }
         //}
 
+        // Neo Code
         //Every Fight is Cursed
         // Fisher–Yates shuffle
         private static void KnuthShuffle<T>(List<T> list)
@@ -2188,7 +2209,6 @@ namespace ExpertPlusMod
             }
         }
 
-        // Neo Shrimp Code
         //Lift Card Placement at bottom
         [HarmonyPatch(typeof(BattleTeam))]
         class Move_Uncurse_Card_Patch

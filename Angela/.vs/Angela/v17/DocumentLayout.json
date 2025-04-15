@@ -1,0 +1,118 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|c:\\steam\\steamapps\\common\\chrono ark\\mod\\mod projects\\angela\\buffs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|solutionrelative:buffs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\skills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|solutionrelative:skills.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\passive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|solutionrelative:passive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\angela_plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|solutionrelative:angela_plugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\angela_moditemkeys.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|solutionrelative:angela_moditemkeys.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\angela_moddefinition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6ADEB3B7-9008-4658-8F2A-68A625F69127}|Angela.csproj|solutionrelative:angela_moddefinition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Skills.cs",
+              "DocumentMoniker": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Skills.cs",
+              "RelativeDocumentMoniker": "Skills.cs",
+              "ToolTip": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Skills.cs",
+              "RelativeToolTip": "Skills.cs",
+              "ViewState": "AgIAAEECAAAAAAAAAAAAAGcBAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T04:34:00.385Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Buffs.cs",
+              "DocumentMoniker": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Buffs.cs",
+              "RelativeDocumentMoniker": "Buffs.cs",
+              "ToolTip": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Buffs.cs",
+              "RelativeToolTip": "Buffs.cs",
+              "ViewState": "AgIAAPMBAAAAAAAAAAAtwAkCAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T04:38:07.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Passive.cs",
+              "DocumentMoniker": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Passive.cs",
+              "RelativeDocumentMoniker": "Passive.cs",
+              "ToolTip": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Passive.cs",
+              "RelativeToolTip": "Passive.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T08:20:11.671Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Angela_Plugin.cs",
+              "DocumentMoniker": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Angela_Plugin.cs",
+              "RelativeDocumentMoniker": "Angela_Plugin.cs",
+              "ToolTip": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Angela_Plugin.cs",
+              "RelativeToolTip": "Angela_Plugin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T04:33:21.228Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Angela_ModItemKeys.cs",
+              "DocumentMoniker": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Angela_ModItemKeys.cs",
+              "RelativeDocumentMoniker": "Angela_ModItemKeys.cs",
+              "ToolTip": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Angela_ModItemKeys.cs",
+              "RelativeToolTip": "Angela_ModItemKeys.cs",
+              "ViewState": "AgIAABwBAAAAAAAAAAAAALAAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T04:33:11.275Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Angela_ModDefinition.cs",
+              "DocumentMoniker": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Angela_ModDefinition.cs",
+              "RelativeDocumentMoniker": "Angela_ModDefinition.cs",
+              "ToolTip": "C:\\Steam\\steamapps\\common\\Chrono Ark\\Mod\\Mod Projects\\Angela\\Angela_ModDefinition.cs",
+              "RelativeToolTip": "Angela_ModDefinition.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwBwAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T04:33:06.545Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

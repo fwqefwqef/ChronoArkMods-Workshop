@@ -1,0 +1,8 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\obj\Debug\Angela.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\obj\Debug\Angela.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\obj\Debug\Angela.csproj.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\bin\Debug\Angela414202591255PM.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\bin\Debug\Angela414202591255PM.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\obj\Debug\Angela414202591255PM.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Angela\obj\Debug\Angela414202591255PM.pdb

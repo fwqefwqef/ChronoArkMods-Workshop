@@ -1,8 +1,7 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using GameDataEditor;
+﻿using GameDataEditor;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -24,13 +23,15 @@ namespace SaveItem
     [PluginConfig("SaveItem", "SaveItem", "1.0.0")]
     public class SaveItemPlugin : ChronoArkPlugin
     {
-        public const string GUID = "windy.saveitem";
-        public const string version = "1.0.0";
+
+        public static string savedItem = "";
+        public static bool enableDontDel = false;
 
         private Harmony harmony;
         public override void Initialize()
         {
             ModInfo modInfo = ModManager.getModInfo("SaveItem");
+            enableDontDel = modInfo.GetSetting<ToggleSetting>("enableDontDel").Value;
 
             this.harmony = new Harmony(base.GetGuid());
             this.harmony.PatchAll();
@@ -48,7 +49,8 @@ namespace SaveItem
 
                 MasterAudio.PlaySound("TimeVaultDoor", 1f, null, 0f, null, null, false, false);
                 SaveManager.NowData.SaveedKey = item.itemkey;
-                Debug.Log("Stored " +item.itemkey);
+                Debug.Log("Stored " + item.itemkey);
+                savedItem = item.itemkey;
             }
             static bool Prefix(PasswordWindow __instance)
             {
@@ -223,7 +225,14 @@ namespace SaveItem
                     UIManager.InstantiateActive(UIManager.inst.SelectItemUI).GetComponent<SelectItemUI>().Init(
                         reward, new RandomItemBtn.SelectItemClickDel(store), false);
                 }
-                
+
+                else if (text.ToLower() == "wipe")
+                {
+                    SaveManager.NowData.SaveedKey = "";
+                    savedItem = "";
+                    MasterAudio.PlaySound("Wind_Swoosh_04", 1f, null, 0f, null, null, false, false);
+                }
+
                 else
                 {
                     return true;
@@ -232,8 +241,50 @@ namespace SaveItem
                 __instance.PlayerTextfield.text = "";
                 return false;
             }
+
         }
 
+        [HarmonyPatch(typeof(SelectItemUI), "Update")]
+        class MoveUI_Patch
+        {
+            static void Postfix()
+            {
+                //Debug.Log("Update");
+                GamepadManager.IsLayoutMode = false;
+            }
+        }
+
+        [HarmonyPatch(typeof(PlayData), "GameEndInit")]
+        class DontDel2
+        {
+            [HarmonyPostfix]
+            static void Postfix()
+            {
+                if (enableDontDel)
+                {
+                    SaveManager.NowData.SaveedKey = savedItem;
+                    Debug.Log("Overwrite save item");
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(CharSelectMainUIV2), "Init")]
+        class DontDel3
+        {
+            [HarmonyPrefix]
+            static bool Prefix()
+            {
+                if (enableDontDel)
+                {
+                    if (SaveManager.NowData.SaveedKey == "" && savedItem != "")
+                    {
+                        SaveManager.NowData.SaveedKey = savedItem;
+                        Debug.Log("Overwrite save item2");
+                    }
+                }
+                return true;
+            }
+        }
     }
 }
 

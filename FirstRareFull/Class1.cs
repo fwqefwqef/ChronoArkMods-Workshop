@@ -62,14 +62,14 @@ namespace FirstRareFull
                                     }
                                 }
                             }
-                            if (PlayData.TSavedata.Party[i].BasicSkill.Rare)
+                            if (PlayData.TSavedata.Party[i].BasicSkill.SkillInfo.Rare)
                             {
                                 flag = true;
                             }
                         }
                         if (!flag)
                         {
-                            // Changed Here 
+                            // Changed Here  
                             List<GDESkillData> gdeskillData = PlayData.GetMySkills(PlayData.TSavedata.Party[i].KeyData, true).GroupBy(x => x.KeyID).Select(x => x.First()).ToList();
                             if (gdeskillData != null)
                             {
@@ -103,9 +103,19 @@ namespace FirstRareFull
             }
         }
 
+        //[HarmonyPatch(typeof(DataCollectMgr), "GameEnd")]
+        //class RareTurnBackOn
+        //{
+        //    [HarmonyPostfix]
+        //    static void Postfix()
+        //    {
+        //        firstlearn = true;
+        //        Debug.Log("Rare Turned Back On");
+        //    }
+        //}
 
-        [HarmonyPatch(typeof(DataCollectMgr), "GameEnd")]
-        class RareTurnBackOn
+        [HarmonyPatch(typeof(PlayData), "GameEndInit")]
+        class RareTurnBackOn2
         {
             [HarmonyPostfix]
             static void Postfix()

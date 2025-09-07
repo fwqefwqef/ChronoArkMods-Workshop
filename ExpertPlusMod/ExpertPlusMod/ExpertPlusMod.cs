@@ -404,7 +404,7 @@ namespace ExpertPlusMod
                                 (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 21;
 
                                 List<string> b = new List<string>();
-                                b.Add("S3_Pharos_HighPriest");
+                                b.Add("S3_Pharos_HighPriest"); // Reaper Summon
                                 b.Add("S3_Boss_Reaper");
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
@@ -421,16 +421,20 @@ namespace ExpertPlusMod
                             {
                                 List<string> a = new List<string>();
                                 a.Add("S3_Boss_TheLight");
-                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = a;
+                                (masterJson[e.Key] as Dictionary<string, object>)["Enemys"] = a;
+
+                                List<string> b = new List<string>();
+                                b.Add("S3_Pharos_HighPriest");
+                                b.Add("S3_Boss_Reaper");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave2"] = b;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Lock"] = false;
                                 (masterJson[e.Key] as Dictionary<string, object>)["UseCustomPosition"] = false;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave2Turn"] = 99;
                                 (masterJson[e.Key] as Dictionary<string, object>)["CustomeFogTurn"] = 21;
 
-                                List<string> b = new List<string>();
-                                b.Add("S3_Pharos_HighPriest");
-                                b.Add("S3_Boss_Reaper");
-                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = b;
+                                List<string> c = new List<string>();
+                                c.Add("S3_FanaticBoss");
+                                (masterJson[e.Key] as Dictionary<string, object>)["Wave3"] = c;
                                 (masterJson[e.Key] as Dictionary<string, object>)["Wave3Turn"] = 100;
                             }
                             if (DespairMode && CursedBosses)
@@ -1224,6 +1228,7 @@ namespace ExpertPlusMod
                         ___Itemviews.RemoveAll(x => x.itemkey == GDEItemKeys.Item_Scroll_Scroll_Uncurse);
 
                         ___Itemviews.Add(ItemBase.GetItem(PlayData.GetEquipRandom(3)));
+                        
                         __instance.Itemviews.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul, 3));
 
                         Random rand = new Random();
@@ -1500,23 +1505,6 @@ namespace ExpertPlusMod
                     return false;
                 }
                 return true;
-            }
-        }
-
-        // Godo 20 soulstones
-        [HarmonyPatch(typeof(BattleSystem), "ClearBattle")]
-        class GD20_Patch
-        {
-            static void Postfix(BattleSystem __instance)
-            {
-                Debug.Log(__instance.MainQueueData.Key);
-                if (DespairMode)
-                {
-                    if (__instance.MainQueueData.Key == GDEItemKeys.EnemyQueue_CrimsonQueue_GunManBoss)
-                    {
-                        __instance.Reward.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul, 20));
-                    }
-                }
             }
         }
 
@@ -1856,18 +1844,40 @@ namespace ExpertPlusMod
                 // No Boss Changes
                 else
                 {
-                    if (ActionCount == 1 && BattleSystem.instance.EnemyList.Count == 1)
-                    {
-                        __result = __instance.BChar.Skills[0];
-                        return false;
-                    }
-                    if (BattleSystem.instance.EnemyList.Count > 1)
+                    return true;
+                }
+            }
+        }
+
+        //Inquisitor cannot do the flame move
+        [HarmonyPatch(typeof(AI_FanaticBoss))]
+        class InquisitorPatch
+        {
+            [HarmonyPatch(nameof(AI_FanaticBoss.SkillSelect))]
+            [HarmonyPrefix]
+            static bool Prefix(ref Skill __result, AI_FanaticBoss __instance, int ActionCount)
+            {
+                if (ActionCount == 0)
+                {
+                    __result = __instance.BChar.Skills[0];
+                }
+                if (ActionCount == 1)
+                {
+                    if (BattleSystem.instance.TurnNum % 2 != 0)
                     {
                         __result = __instance.BChar.Skills[1];
-                        return false;
                     }
+                    __result = __instance.BChar.Skills[2];
                 }
-                __result = null;
+                else // Here changed, third action and above just choose skill 1 or 2
+                {
+                    List<Skill> list = new List<Skill>
+                    {
+                        __instance.BChar.Skills[1],
+                        __instance.BChar.Skills[2],
+                    };
+                    __result = __instance.SkillRandomSelect(list);
+                }
                 return false;
             }
         }

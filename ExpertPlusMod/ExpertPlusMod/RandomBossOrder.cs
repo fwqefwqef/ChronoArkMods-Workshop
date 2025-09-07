@@ -470,6 +470,17 @@ namespace ExpertPlusMod
                             return;
                         }
                     }
+
+                    if (__instance is P_Gunman)
+                    {
+                        if (ExpertPlusPlugin.DespairMode)
+                        {
+                            Debug.Log("Gunman death");
+                            List<ItemBase> list = new List<ItemBase>();
+                            list.Add(ItemBase.GetItem(GDEItemKeys.Item_Misc_Soul, 20));
+                            InventoryManager.Reward(list);
+                        }
+                    }
                 }
             }
         }

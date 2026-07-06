@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpertPlusMod", "ExpertPlusMod.csproj", "{0A3CDC62-D854-9B72-7EF9-9CFFB605FE7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A3CDC62-D854-9B72-7EF9-9CFFB605FE7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A3CDC62-D854-9B72-7EF9-9CFFB605FE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0ECD1577-50DE-40B5-AC83-4B36D43F85B6}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,15 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\Mono.Cecil.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\Mono.Cecil.Mdb.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\Mono.Cecil.Pdb.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\Mono.Cecil.Rocks.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\MonoMod.RuntimeDetour.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\MonoMod.Utils.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\obj\Debug\ExpertPlusMod.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\obj\Debug\ExpertPlusMod.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\obj\Debug\ExpertPl.3C9899DD.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\0Harmony.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\ExpertPlusMod06022026111430.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\bin\Debug\ExpertPlusMod06022026111430.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\obj\Debug\ExpertPlusMod06022026111430.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusMod\obj\Debug\ExpertPlusMod06022026111430.pdb

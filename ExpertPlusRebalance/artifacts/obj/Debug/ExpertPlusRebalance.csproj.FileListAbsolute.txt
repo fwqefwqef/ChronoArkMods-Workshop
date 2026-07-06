@@ -1,0 +1,9 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\artifacts\obj\Debug\ExpertPlusRebalance.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\artifacts\obj\Debug\ExpertPlusRebalance.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\bin\Debug\ExpertPlusRebalance05272026211348.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\bin\Debug\ExpertPlusRebalance05272026211348.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\bin\Debug\0Harmony.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\artifacts\obj\Debug\ExpertPl.71CFC8F5.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\artifacts\obj\Debug\ExpertPlusRebalance05272026211348.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\ExpertPlusRebalance\artifacts\obj\Debug\ExpertPlusRebalance05272026211348.pdb

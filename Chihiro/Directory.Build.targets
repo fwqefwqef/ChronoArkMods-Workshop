@@ -1,0 +1,6 @@
+<Project>
+  <ItemGroup>
+    <Compile Remove="artifacts\obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Remove="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Byleth", "Byleth.csproj", "{288640D0-2F17-5FB4-8EE9-814ABE86DEEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{288640D0-2F17-5FB4-8EE9-814ABE86DEEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{288640D0-2F17-5FB4-8EE9-814ABE86DEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {523A73E8-6F81-4211-88CC-6BF3A1D421E7}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\artifacts\obj\Debug\Chihiro.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\artifacts\obj\Debug\Chihiro.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\bin\Debug\0Harmony.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\bin\Debug\BasicMethods.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\bin\Debug\DynamicEmitAPI.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\artifacts\obj\Debug\Chihiro.csproj.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\bin\Debug\Chihiro05172026014248.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\bin\Debug\Chihiro05172026014248.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\artifacts\obj\Debug\Chihiro05172026014248.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Chihiro\artifacts\obj\Debug\Chihiro05172026014248.pdb

@@ -1,0 +1,9 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\obj\Debug\Argalia.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\obj\Debug\Argalia.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\obj\Debug\Argalia.csproj.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\bin\Debug\Argalia04062026135154.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\bin\Debug\Argalia04062026135154.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\obj\Debug\Argalia04062026135154.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\obj\Debug\Argalia04062026135154.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Argalia\bin\Debug\0Harmony.dll

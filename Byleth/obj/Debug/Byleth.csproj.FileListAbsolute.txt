@@ -1,0 +1,8 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\obj\Debug\Byleth.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\obj\Debug\Byleth.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\obj\Debug\Byleth.csproj.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\bin\Debug\Byleth07032026120105.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\bin\Debug\Byleth07032026120105.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\obj\Debug\Byleth07032026120105.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\Byleth\obj\Debug\Byleth07032026120105.pdb

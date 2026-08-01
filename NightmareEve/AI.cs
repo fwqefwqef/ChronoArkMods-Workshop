@@ -167,7 +167,7 @@ namespace NightmareEve
 				if (ActionCount == 0)
                 {
 					BattleSystem.instance.AllyTeam.Add(Skill.TempSkill("S_Sacrifice", BattleSystem.instance.AllyTeam.LucyChar, BattleSystem.instance.AllyTeam), true);
-					return this.BChar.Skills[5];
+					return this.BChar.Skills[4];
 				}
 				else
 				{
@@ -178,7 +178,7 @@ namespace NightmareEve
 					return null;
 				}
             }
-			return base.SkillRandomSelect(new List<Skill>{this.BChar.Skills[1], this.BChar.Skills[2], this.BChar.Skills[3], this.BChar.Skills[4]});
+			return base.SkillRandomSelect(new List<Skill>{this.BChar.Skills[1], this.BChar.Skills[2], this.BChar.Skills[3]});
 		}
 	}
 
@@ -256,7 +256,7 @@ namespace NightmareEve
 		public override Skill SkillSelect(int ActionCount)
 		{
 			// Phase change
-			if (this.BChar.HP <= 1000)
+			if (this.BChar.HP <= 1500)
             {
                 //if (ActionCount == 2)
                 //{

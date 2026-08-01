@@ -1,0 +1,9 @@
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\bin\Debug\System.Core.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\obj\Debug\RedMist.csproj.AssemblyReference.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\obj\Debug\RedMist.csproj.CoreCompileInputs.cache
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\obj\Debug\RedMist.csproj.Up2Date
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\bin\Debug\0Harmony.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\bin\Debug\RedMist07192026100847.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\bin\Debug\RedMist07192026100847.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\obj\Debug\RedMist07192026100847.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\RedMist\obj\Debug\RedMist07192026100847.pdb

@@ -1,10 +1,11 @@
 ﻿using I2.Loc;
 using UnityEngine;
 using GameDataEditor;
+using System;
 
 namespace NightmareEve
 {
-    public class Mistletoe : EquipBase, IP_BattleEnd
+	public class Mistletoe : EquipBase
 	{
 		public override void Init()
 		{
@@ -12,32 +13,9 @@ namespace NightmareEve
 			this.PlusStat.reg = 1f;
 			base.Init();
 		}
-
-		public void BattleEnd()
-		{
-			Debug.Log("Battle End");
-			Debug.Log(BattleSystem.instance.MainQueueData.Key);
-			if (BattleSystem.instance.MainQueueData.Key == "Abbadon_Queue")
-			{
-				Debug.Log("Abbadon Queue");
-				int i = 0;
-				while (i < this.MyChar.Equip.Count)
-				{
-					if (this.MyChar.Equip[i] == this.MyItem)
-					{
-						this.MyChar.Equip[i] = ItemBase.GetItem("Mistletoe_1");
-						break;
-					}
-					else
-					{
-						i++;
-					}
-				}
-			}
-		}
 	}
 
-	public class Mistletoe_1 : EquipBase, IP_BattleEnd, IP_DamageTake, IP_CampFire
+    public class Mistletoe_1 : EquipBase, IP_DamageTake, IP_CampFire
 	{
 		public override void Init()
 		{
@@ -46,28 +24,6 @@ namespace NightmareEve
 			this.PlusStat.def = 10f;
 			base.Init();
 		}
-
-			public void BattleEnd()
-			{
-				Debug.Log("Battle End");
-				if (BattleSystem.instance.MainQueueData.Key == "Minotaur_Queue")
-				{
-					int i = 0;
-					while (i < this.MyChar.Equip.Count)
-					{
-						if (this.MyChar.Equip[i] == this.MyItem)
-						{
-							this.MyChar.Equip[i] = ItemBase.GetItem("Mistletoe_2");
-							break;
-						}
-						else
-						{
-							i++;
-						}
-					}
-				}
-			}
-
 		public override string DescExtended(string desc)
 		{
 			if (this.Effect)
@@ -82,6 +38,7 @@ namespace NightmareEve
 			{
 				resist = true;
 				this.BChar.Heal(this.BChar, 0, 1 - this.BChar.Info.Hp , 0);
+				this.Effect = true;
 			}
 		}
 		public void Camp()
@@ -91,7 +48,7 @@ namespace NightmareEve
 
 		public bool Effect = false;
 	}
-	public class Mistletoe_22 : EquipBase, IP_BattleEnd, IP_DamageTake, IP_CampFire
+	public class Mistletoe_2 : EquipBase, IP_DamageTake, IP_CampFire
 	{
 		public override void Init()
 		{
@@ -104,28 +61,6 @@ namespace NightmareEve
 			this.PlusStat.HIT_DOT = 20f;
 			base.Init();
 		}
-
-		public void BattleEnd()
-		{
-			Debug.Log("Battle End");
-			if (BattleSystem.instance.MainQueueData.Key == "Matador_Queue")
-			{
-				int i = 0;
-				while (i < this.MyChar.Equip.Count)
-				{
-					if (this.MyChar.Equip[i] == this.MyItem)
-					{
-						this.MyChar.Equip[i] = ItemBase.GetItem("Mistletoe_3");
-						break;
-					}
-					else
-					{
-						i++;
-					}
-				}
-			}
-		}
-
 		public override string DescExtended(string desc)
 		{
 			if (this.Effect)
@@ -140,6 +75,7 @@ namespace NightmareEve
 			{
 				resist = true;
 				this.BChar.Heal(this.BChar, 0, 1 - this.BChar.Info.Hp, 0);
+				this.Effect = true;
 			}
 		}
 		public void Camp()
@@ -150,7 +86,7 @@ namespace NightmareEve
 		public bool Effect = false;
 	}
 
-	public class Mistletoe_3 : EquipBase, IP_BattleEnd, IP_DamageTake, IP_CampFire
+	public class Mistletoe_3 : EquipBase, IP_DamageTake, IP_CampFire
 	{
 		public override void Init()
 		{
@@ -164,27 +100,6 @@ namespace NightmareEve
 			base.Init();
 		}
 
-		public void BattleEnd()
-		{
-			Debug.Log("Battle End");
-			if (BattleSystem.instance.MainQueueData.Key == "WhiteRider_Queue")
-			{
-				int i = 0;
-				while (i < this.MyChar.Equip.Count)
-				{
-					if (this.MyChar.Equip[i] == this.MyItem)
-					{
-						this.MyChar.Equip[i] = ItemBase.GetItem("Mistletoe_4");
-						break;
-					}
-					else
-					{
-						i++;
-					}
-				}
-			}
-		}
-
 		public override string DescExtended(string desc)
 		{
 			if (this.Effect)
@@ -199,6 +114,7 @@ namespace NightmareEve
 			{
 				resist = true;
 				this.BChar.Heal(this.BChar, 0, 1 - this.BChar.Info.Hp, 0);
+				this.Effect = true;
 			}
 		}
 		public void Camp()
@@ -209,7 +125,7 @@ namespace NightmareEve
 		public bool Effect = false;
 	}
 
-	public class Mistletoe_4 : EquipBase, IP_BattleEnd, IP_DamageTake, IP_CampFire
+	public class Mistletoe_4 : EquipBase, IP_DamageTake, IP_CampFire
 	{
 		public override void Init()
 		{
@@ -226,27 +142,6 @@ namespace NightmareEve
 			base.Init();
 		}
 
-		public void BattleEnd()
-		{
-			Debug.Log("Battle End");
-			if (BattleSystem.instance.MainQueueData.Key == "Belial_Queue")
-			{
-				int i = 0;
-				while (i < this.MyChar.Equip.Count)
-				{
-					if (this.MyChar.Equip[i] == this.MyItem)
-					{
-						this.MyChar.Equip[i] = ItemBase.GetItem("Mistletoe_5");
-						break;
-					}
-					else
-					{
-						i++;
-					}
-				}
-			}
-		}
-
 		public override string DescExtended(string desc)
 		{
 			if (this.Effect)
@@ -261,6 +156,7 @@ namespace NightmareEve
 			{
 				resist = true;
 				this.BChar.Heal(this.BChar, 0, 1 - this.BChar.Info.Hp, 0);
+				this.Effect = true;
 			}
 		}
 		public void Camp()
@@ -271,7 +167,7 @@ namespace NightmareEve
 		public bool Effect = false;
 	}
 
-	public class Mistletoe_5 : EquipBase, IP_BattleEnd, IP_DamageTake, IP_CampFire, IP_BuffAddAfter
+	public class Mistletoe_5 : EquipBase, IP_DamageTake, IP_CampFire, IP_BuffAddAfter
 	{
 		public override void Init()
 		{
@@ -288,30 +184,6 @@ namespace NightmareEve
 			base.Init();
 		}
 
-		public void BattleEnd()
-		{
-			Debug.Log("Battle End");
-			if (BattleSystem.instance.MainQueueData.Key == "LBossFirst_Queue" || BattleSystem.instance.MainQueueData.Key == "Beelzebub_Queue")
-			{
-				Debug.Log("Battle End2");
-				int i = 0;
-				while (i < this.MyChar.Equip.Count)
-				{
-					Debug.Log("Battle End3");
-					if (this.MyChar.Equip[i] == this.MyItem)
-					{
-						Debug.Log("Battle End4");
-						this.MyChar.Equip[i] = ItemBase.GetItem("Mistletoe_6");
-						break;
-					}
-					else
-					{
-						i++;
-					}
-				} // 
-			}
-		}
-
 		public override string DescExtended(string desc)
 		{
 			if (this.Effect)
@@ -326,6 +198,7 @@ namespace NightmareEve
 			{
 				resist = true;
 				this.BChar.Heal(this.BChar, 0, 1 - this.BChar.Info.Hp, 0);
+				this.Effect = true;
 			}
 		}
 		public void Camp()
@@ -375,6 +248,7 @@ namespace NightmareEve
 			{
 				resist = true;
 				this.BChar.Heal(this.BChar, 0, 1 - this.BChar.Info.Hp, 0);
+				this.Effect = true;
 			}
 		}
 		public void Camp()

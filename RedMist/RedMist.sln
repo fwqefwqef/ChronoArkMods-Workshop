@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedMist", "RedMist.csproj", "{0BFBA8D8-5073-FE27-06E7-C5D84E1DC928}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BFBA8D8-5073-FE27-06E7-C5D84E1DC928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BFBA8D8-5073-FE27-06E7-C5D84E1DC928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FCC9594-87DB-494A-A634-8EB6362A607D}
+	EndGlobalSection
+EndGlobal

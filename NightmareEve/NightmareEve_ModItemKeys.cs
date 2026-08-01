@@ -22,7 +22,21 @@ namespace NightmareEve
 		/// Black Rider
 		/// </summary>
         public static string Enemy_BlackRider = "BlackRider";
-        public static string Buff_B_Belial_ = "B_Belial_";
+		/// <summary>
+		/// Lunatic Mode
+		/// Sol Niger restores HP equal to damage dealt. 
+		/// </summary>
+        public static string Buff_B_Abbadon_LunaticMode = "B_Abbadon_LunaticMode";
+		/// <summary>
+		/// Lunatic Mode
+		/// Eggs spawn 1 more fly.
+		/// </summary>
+        public static string Buff_B_Beelzebub_LunaticMode = "B_Beelzebub_LunaticMode";
+		/// <summary>
+		/// Lunatic Mode
+		/// Start with Rangda & Susano-o at the start of battle. Summon them again after casting a powerful attack.
+		/// </summary>
+        public static string Buff_B_Belial_LunaticMode = "B_Belial_LunaticMode";
 		/// <summary>
 		/// Blessing
 		/// </summary>
@@ -37,20 +51,20 @@ namespace NightmareEve
         public static string Buff_B_DarkMight = "B_DarkMight";
 		/// <summary>
 		/// Toxic Egg
-		/// When removed, deal 13 damage to this character and spawn a Fly on the enemy team.
+		/// When removed, deal 17 damage to this character and spawn a Fly on the enemy team.
 		/// When gained, add a 'Hatch' skill in hand.
 		/// </summary>
         public static string Buff_B_Egg_0 = "B_Egg_0";
 		/// <summary>
 		/// Binding Egg
 		/// Cannot act.
-		/// When removed, deal 13 damage to this character and spawn a Fly on the enemy team.
+		/// When removed, deal 17 damage to this character and spawn a Fly on the enemy team.
 		/// When gained, add a 'Hatch' skill in hand.
 		/// </summary>
         public static string Buff_B_Egg_1 = "B_Egg_1";
 		/// <summary>
 		/// Withering Egg
-		/// When removed, deal 13 damage to this character and spawn a Fly on the enemy team.
+		/// When removed, deal 17 damage to this character and spawn a Fly on the enemy team.
 		/// When gained, add a 'Hatch' skill in hand.
 		/// </summary>
         public static string Buff_B_Egg_2 = "B_Egg_2";
@@ -59,11 +73,21 @@ namespace NightmareEve
 		/// </summary>
         public static string Buff_B_Fervor = "B_Fervor";
 		/// <summary>
+		/// Fiend Soul
+		/// Drop a Fiend Soul on death.
+		/// </summary>
+        public static string Buff_B_FiendSoul = "B_FiendSoul";
+		/// <summary>
 		/// Voice of God
 		/// Boost 'Megidoladyne' power by 10 per stack.
-		/// At 1500HP, create a 'Blessing' skill in hand and change phase next turn.
+		/// At 1500HP, change phase next turn.
 		/// </summary>
         public static string Buff_B_Gathering = "B_Gathering";
+		/// <summary>
+		/// Lunatic Mode
+		/// Whenever a horseman dies, the other horsemen gain Max HP +15% and Attack Power +25%.
+		/// </summary>
+        public static string Buff_B_Horsemen_LunaticMode = "B_Horsemen_LunaticMode";
 		/// <summary>
 		/// Inferno
 		/// </summary>
@@ -74,15 +98,61 @@ namespace NightmareEve
 		/// Remove stun upon gaining this buff.
 		/// </summary>
         public static string Buff_B_Invincible = "B_Invincible";
+		/// <summary>
+		/// Taunted
+		/// </summary>
         public static string Buff_B_MatadorTaunt = "B_MatadorTaunt";
 		/// <summary>
-		/// Recarm
+		/// Lunatic Mode
+		/// 'Andalucia' damage increases by 2 for each cast.
 		/// </summary>
-        public static string Buff_B_Recarm = "B_Recarm";
+        public static string Buff_B_Matador_LunaticMode = "B_Matador_LunaticMode";
+		/// <summary>
+		/// Lunatic Mode
+		/// Revive an additional angel upon using 'Samarecarm'.
+		/// </summary>
+        public static string Buff_B_Metatron_LunaticMode = "B_Metatron_LunaticMode";
+		/// <summary>
+		/// Lunatic Mode
+		/// When one dies, the other becomes enraged and gains Max HP +50%, and an additional action.
+		/// </summary>
+        public static string Buff_B_MinoMedu_LunaticMode = "B_MinoMedu_LunaticMode";
+		/// <summary>
+		/// Rakukaja
+		/// Endure at 1HP.
+		/// </summary>
+        public static string Buff_B_Rakukaja = "B_Rakukaja";
+		/// <summary>
+		/// Repel Phys
+		/// Nullify attacks that deal 20 or more damage and reflect its damage back to the attacker.
+		/// </summary>
+        public static string Buff_B_Rangda = "B_Rangda";
 		/// <summary>
 		/// Red Capote
 		/// </summary>
         public static string Buff_B_RedCapote = "B_RedCapote";
+		/// <summary>
+		/// Sukukaja
+		/// Gain an additional action.
+		/// </summary>
+        public static string Buff_B_Sukukaja = "B_Sukukaja";
+		/// <summary>
+		/// Drain Phys
+		/// Nullify all attacks that deal below 20 damage and restore HP equal to its damage.
+		/// </summary>
+        public static string Buff_B_Susano = "B_Susano";
+		/// <summary>
+		/// Tarukaja
+		/// Alive enemies gain additional Crit +50% at the end of each player turn.
+		/// Overflowing crit is converted to crit damage.
+		/// </summary>
+        public static string Buff_B_Tarukaja = "B_Tarukaja";
+		/// <summary>
+		/// Candle
+		/// The essence of a Fiend.
+		/// Use on the Mistletoe item to upgrade it.
+		/// </summary>
+        public static string Item_Consume_FiendSoul = "FiendSoul";
         public static string Enemy_Fly = "Fly";
 		/// <summary>
 		/// Gabriel
@@ -112,40 +182,40 @@ namespace NightmareEve
         public static string EnemyQueue_Minotaur_Queue = "Minotaur_Queue";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// </summary>
         public static string Item_Equip_Mistletoe = "Mistletoe";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// Enduring Soul: Once per stage, endure a fatal attack and heal HP to 1.
 		/// Enduring Soul: &a
 		/// </summary>
         public static string Item_Equip_Mistletoe_1 = "Mistletoe_1";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// Enduring Soul: Once per stage, endure a fatal attack and heal HP to 1.
 		/// Enduring Soul: &a
 		/// </summary>
         public static string Item_Equip_Mistletoe_2 = "Mistletoe_2";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// Enduring Soul: Once per stage, endure a fatal attack and heal HP to 1.
 		/// Enduring Soul: &a
 		/// </summary>
         public static string Item_Equip_Mistletoe_3 = "Mistletoe_3";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// Enduring Soul: Once per stage, endure a fatal attack and heal HP to 1.
 		/// Enduring Soul: &a
 		/// </summary>
         public static string Item_Equip_Mistletoe_4 = "Mistletoe_4";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// Enduring Soul: Once per stage, endure a fatal attack and heal HP to 1.
 		/// Enduring Soul: &a
 		/// Buffs and debuffs applied by the user last 1 more turn (excluding CC debuffs).
@@ -153,7 +223,7 @@ namespace NightmareEve
         public static string Item_Equip_Mistletoe_5 = "Mistletoe_5";
 		/// <summary>
 		/// Mistletoe
-		/// Gains stats as you defeat bosses. (Must be equipped)
+		/// Gains stats as you defeat bosses.
 		/// Enduring Soul: Once per stage, endure a fatal attack and heal HP to 1.
 		/// Enduring Soul: &a
 		/// Buffs and debuffs applied by the user last 1 more turn (excluding CC debuffs).
@@ -176,6 +246,10 @@ namespace NightmareEve
 		/// On the next turn, create a 'Sacrifice' in hand and use a powerful attack.
 		/// </summary>
         public static string Buff_P_Belial = "P_Belial";
+		/// <summary>
+		/// Rangda
+		/// </summary>
+        public static string Enemy_Rangda = "Rangda";
 		/// <summary>
 		/// Raphael
 		/// </summary>
@@ -237,6 +311,10 @@ namespace NightmareEve
         public static string SkillEffect_SE_T_S_RedRider_1 = "SE_T_S_RedRider_1";
         public static string SkillEffect_SE_T_S_WhiteRider_0 = "SE_T_S_WhiteRider_0";
         public static string SkillEffect_SE_T_S_WhiteRider_1 = "SE_T_S_WhiteRider_1";
+		/// <summary>
+		/// Susano-o
+		/// </summary>
+        public static string Enemy_Susano = "Susano";
         public static string Skill_S_Abbadon_0 = "S_Abbadon_0";
 		/// <summary>
 		/// Sol Niger
@@ -268,7 +346,7 @@ namespace NightmareEve
         public static string Skill_S_Beel_1 = "S_Beel_1";
 		/// <summary>
 		/// Deathbound
-		/// Randomly attack 5 times (max 2 on same target)
+		/// Recast 5 times on a random target (max 2 on same target)
 		/// </summary>
         public static string Skill_S_Beel_2 = "S_Beel_2";
 		/// <summary>
@@ -286,9 +364,13 @@ namespace NightmareEve
         public static string Skill_S_Beel_4 = "S_Beel_4";
 		/// <summary>
 		/// Thunder Reign
-		/// Recast on this target. (Deal &a damage)
 		/// </summary>
         public static string Skill_S_Beel_4_0 = "S_Beel_4_0";
+		/// <summary>
+		/// Thunder Reign
+		/// Recast on this target.
+		/// </summary>
+        public static string Skill_S_Beel_4_1 = "S_Beel_4_1";
 		/// <summary>
 		/// Death Flies
 		/// All targets gain a random egg.
@@ -304,6 +386,7 @@ namespace NightmareEve
         public static string Skill_S_Belial_1 = "S_Belial_1";
 		/// <summary>
 		/// Hell Thrust
+		/// Hits 3 times.
 		/// </summary>
         public static string Skill_S_Belial_2 = "S_Belial_2";
 		/// <summary>
@@ -380,7 +463,7 @@ namespace NightmareEve
         public static string Skill_S_Matador_1 = "S_Matador_1";
 		/// <summary>
 		/// Zandyne
-		/// On hit, discard all of the target's skills in hand.
+		/// Discard all of the target's skills in hand.
 		/// </summary>
         public static string Skill_S_Matador_2 = "S_Matador_2";
 		/// <summary>
@@ -422,7 +505,7 @@ namespace NightmareEve
         public static string Skill_S_Metatron_1 = "S_Metatron_1";
 		/// <summary>
 		/// Raging Whirlwind
-		/// On hit, discard all skills of the target.
+		/// Discard all skills of the target.
 		/// Ricochet and deal halved damage to 2 other targets.
 		/// </summary>
         public static string Skill_S_Metatron_2 = "S_Metatron_2";
@@ -441,8 +524,8 @@ namespace NightmareEve
         public static string Skill_S_Metatron_4 = "S_Metatron_4";
         public static string Skill_S_Metatron_5 = "S_Metatron_5";
 		/// <summary>
-		/// Recarm
-		/// Revive one of the fallen angels at 50% HP.
+		/// Samarecarm
+		/// Revive one of the fallen angels.
 		/// </summary>
         public static string Skill_S_Metatron_6 = "S_Metatron_6";
 		/// <summary>
@@ -468,7 +551,7 @@ namespace NightmareEve
         public static string Skill_S_PaleRider_0 = "S_PaleRider_0";
 		/// <summary>
 		/// Mamudoon
-		/// Deal doubled damage to stunned targets.
+		/// Deal 5x damage to stunned targets.
 		/// </summary>
         public static string Skill_S_PaleRider_1 = "S_PaleRider_1";
 		/// <summary>

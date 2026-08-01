@@ -5,17 +5,24 @@ using System.Text;
 using System.Collections;
 using GameDataEditor;
 using UnityEngine;
+using ChronoArkMod.ModEditor;
 
 namespace NightmareEve
 {
-	using System;
 
-	public class S_Abbadon_0 : Skill_Extended, IP_DamageChange
+	public class S_Abbadon_1 : Skill_Extended, IP_DamageChange
 	{
 		public int DamageChange(Skill SkillD, BattleChar Target, int Damage, ref bool Cri, bool View)
 		{
 			if (Target.HP > 0)
 			{
+				if (NightmareEve_Plugin.LunaticModeEnabled)
+				{
+					Debug.Log("Lunatic detected");
+					int hp = Target.HP;
+					this.BChar.Heal(this.BChar, (float)hp, false, false, null);
+                }
+
 				Target.HPToZero();
 				return 0;
 			}
@@ -58,7 +65,7 @@ namespace NightmareEve
 	}
 
 	// Zandyne
-	public class S_Matador_2 : Skill_Extended, IP_SkillUse_Target
+	public class S_Matador_2 : Skill_Extended
 	{
 		public override void Init()
 		{
@@ -66,35 +73,49 @@ namespace NightmareEve
 			//this.EnemyPreviewNoArrow = true;
 		}
 
-		public void AttackEffect(BattleChar hit, SkillParticle SP, int DMG, bool Cri)
-		{
-			if (DMG >= 1)
-			{
-				List<Skill> skills = BattleSystem.instance.AllyTeam.Skills;
-				for (int i = 0; i < skills.Count; i++)
+        public override void SkillUseSingle(Skill SkillD, List<BattleChar> Targets)
+        {
+            List<Skill> skills = BattleSystem.instance.AllyTeam.Skills;
+            for (int i = 0; i < skills.Count; i++)
+            {
+                if (skills[i].Master == Targets[0])
                 {
-					if (skills[i].Master == hit)
-                    {
-						skills[i].Delete(false);
-						i--;
-					}
-				}
-			}
-		}
+                    skills[i].Delete(false);
+                    i--;
+                }
+            }
+        }
 	}
 
 	public class S_Matador_4 : Skill_Extended
 	{
+		public int count = 0;
 		public override void Init()
 		{
 			base.Init();
 			this.EnemyPreviewNoArrow = true;
 		}
+
+		public override void FixedUpdate()
+		{
+			if (count <= 10)
+			{
+				count++;
+                return;
+            }
+			count = 0;
+
+			Buff b = this.BChar.BuffReturn("B_Matador_LunaticMode");
+			if (b != null)
+			{
+				int temp = (b as B_Matador_LunaticMode).andaluciaCastCount;
+                this.SkillBasePlus.Target_BaseDMG = temp * 2;
+			}
+		}
 		public override void SkillUseSingle(Skill SkillD, List<BattleChar> Targets)
 		{
-			Skill skill = Skill.TempSkill("S_Matador_4_0", this.BChar, this.BChar.MyTeam);
-
-			List<BattleChar> targets = BattleSystem.instance.AllyTeam.AliveChars;
+            B_Matador_LunaticMode lunaticBuff = this.BChar.BuffReturn("B_Matador_LunaticMode") as B_Matador_LunaticMode;
+            List<BattleChar> targets = BattleSystem.instance.AllyTeam.AliveChars;
 			targets.AddRange(targets);
 			targets.Remove(Targets[0]);
 			
@@ -111,8 +132,14 @@ namespace NightmareEve
                 }
 				BattleChar pop = targets.Random();
 				targets.Remove(pop);
-				BattleSystem.DelayInput(this.Attack(skill, pop));
+				Skill skill = Skill.TempSkill("S_Matador_4_0", this.BChar, this.BChar.MyTeam);
+                BattleSystem.DelayInput(this.Attack(skill, pop));
 			}
+
+            if (lunaticBuff != null)
+            {
+                BattleSystem.DelayInput(this.AfterAndalucia(lunaticBuff));
+            }
 		}
 
 		public IEnumerator Attack(Skill skill, BattleChar target)
@@ -121,6 +148,12 @@ namespace NightmareEve
 			this.BChar.ParticleOut(skill, target);
 			yield break;
 		}
+
+        private IEnumerator AfterAndalucia(B_Matador_LunaticMode lunaticBuff)
+        {
+            yield return new WaitForSeconds(0.1f);
+            lunaticBuff.andaluciaCastCount++;
+        }
 	}
 
 	public class S_WhiteRider_0 : Skill_Extended, IP_TargetAI
@@ -159,7 +192,7 @@ namespace NightmareEve
 		{
 			if (Target.BuffReturn("B_Common_Rest") != null)
 			{
-				return Damage * 2;
+				return Damage * 5;
 			}
 			return Damage;
 		}
@@ -212,6 +245,11 @@ namespace NightmareEve
 			for (int i = 0; i < Targets.Count; i++)
 			{
 				BattleSystem.DelayInput(this.Attack(skill, Targets));
+			}
+
+			if (this.BChar.BuffFind("B_Belial_LunaticMode", false))
+			{
+				BattleSystem.DelayInput(LunaticModeHelpers.SummonBelialSupports());
 			}
 		}
 		public IEnumerator Attack(Skill skill, List<BattleChar> Targets)
@@ -306,6 +344,7 @@ namespace NightmareEve
 	// Thunder Reign
 	public class S_Beel_4 : Skill_Extended
 	{
+
 		public override void Init()
 		{
 			base.Init();
@@ -319,8 +358,9 @@ namespace NightmareEve
 			{
 				if (!(battleChar.Info.KeyData == GDEItemKeys.Character_Phoenix) || battleChar.HP >= 0)
 				{
-					Skill skill = Skill.TempSkill(GDEItemKeys.Skill_S_LBossFirst_2_Plus, battleChar, battleChar.MyTeam);
-					list.Add(skill);
+					Skill skill = Skill.TempSkill("S_Beel_4_1", battleChar, battleChar.MyTeam);
+                    //(skill.ExtendedFind_DataName("NightmareEve.S_Beel_4_1") as S_Beel_4_1).Char = this.BChar;
+                    list.Add(skill);
 				}
 			}
 			BattleSystem.DelayInput(BattleSystem.I_OtherSkillSelect(list, new SkillButton.SkillClickDel(this.Del), "", false, false, true, false, true));
@@ -351,16 +391,18 @@ namespace NightmareEve
             }
 		}
 	}
-	public class S_Beel_4_0 : Skill_Extended
-	{
-		public override string DescExtended(string desc)
-		{
-			return base.DescExtended(desc).Replace("&a", (this.BChar.GetStat.atk * 1.15).ToString());
-		}
-	}
 
-	// Life Drain
-	public class S_Fly_0 : Skill_Extended
+  //  public class S_Beel_4_1 : Skill_Extended
+  //  {
+		//public BattleChar Char;
+  //      public override string DescExtended(string desc)
+  //      {
+  //          return base.DescExtended(desc).Replace("&a", (this.Char.GetStat.atk * 1,15).ToString());
+  //      }
+  //  }
+
+    // Life Drain
+    public class S_Fly_0 : Skill_Extended
 	{
 		public override void Init()
 		{
@@ -452,9 +494,9 @@ namespace NightmareEve
 				Buff buff = this.BChar.BuffReturn("B_Gathering", false);
 				if (buff == null)
 				{
-					return 80;
+					return 100;
 				}
-				return 80 + buff.StackNum * 10;
+				return 100 + buff.StackNum * 20;
 			}
 		}
 		public override string DescExtended(string desc)
@@ -492,7 +534,7 @@ namespace NightmareEve
 	}
 
 	// Raging Whirlwind
-	public class S_Metatron_2 : Skill_Extended, IP_SkillUse_Target
+	public class S_Metatron_2 : Skill_Extended
 	{
 		public override void Init()
 		{
@@ -500,26 +542,20 @@ namespace NightmareEve
 			//this.EnemyPreviewNoArrow = true;
 		}
 
-		public void AttackEffect(BattleChar hit, SkillParticle SP, int DMG, bool Cri)
-		{
-			if (DMG >= 1)
-			{
-				List<Skill> skills = BattleSystem.instance.AllyTeam.Skills;
-				for (int i = 0; i < skills.Count; i++)
-				{
-					if (skills[i].Master == hit)
-					{
-						skills[i].Delete(false);
-						i--;
-					}
-				}
-			}
-		}
-
 		// Token: 0x060017DB RID: 6107 RVA: 0x000AA9B8 File Offset: 0x000A8BB8
 		public override void SkillUseSingle(Skill SkillD, List<BattleChar> Targets)
 		{
-			base.SkillUseSingle(SkillD, Targets);
+            List<Skill> skills = BattleSystem.instance.AllyTeam.Skills;
+            for (int i = 0; i < skills.Count; i++)
+            {
+                if (skills[i].Master == Targets[0])
+                {
+                    skills[i].Delete(false);
+                    i--;
+                }
+            }
+
+            base.SkillUseSingle(SkillD, Targets);
 			List<BattleChar> list = new List<BattleChar>();
 			if (BattleSystem.instance.AllyList.Count == 2 || BattleSystem.instance.AllyList.Count == 3)
 			{
@@ -583,7 +619,7 @@ namespace NightmareEve
 		}
 	}
 
-	// Recarm
+	// Samarecarm
 	public class S_Metatron_6 : Skill_Extended
 	{
 		public override void SkillUseSingle(Skill SkillD, List<BattleChar> Targets)
@@ -599,7 +635,21 @@ namespace NightmareEve
                 }
             }
 
-			BattleSystem.DelayInput(BattleSystem.instance.NewEnemyAutoPos(enemies.Random(), null));
+			if (enemies.Count == 0)
+			{
+				return;
+			}
+
+			string firstAngel = enemies.Random();
+			enemies.Remove(firstAngel);
+			List<string> angelsToSummon = new List<string> { firstAngel };
+
+			if (NightmareEve_Plugin.LunaticModeEnabled && enemies.Count > 0)
+			{
+				angelsToSummon.Add(enemies.Random());
+			}
+
+			BattleSystem.DelayInput(LunaticModeHelpers.SpawnEnemiesAutoPosSequential(angelsToSummon));
 		}
 	}
 

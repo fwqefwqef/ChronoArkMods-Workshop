@@ -19,10 +19,19 @@ namespace Angela
 		/// </summary>
         public static string SkillExtended_Angela_1_Ex = "Angela_1_Ex";
 		/// <summary>
+		/// Cost +1, Restore 2 mana.
+		/// </summary>
+        public static string SkillExtended_Angela_Synergy1 = "Angela_Synergy1";
+		/// <summary>
 		/// Vengeance
-		/// Damage/Healing increased by 33%.
+		/// Damage/Healing increased by 20%.
 		/// </summary>
         public static string SkillExtended_Angela_Vengeance_Ex = "Angela_Vengeance_Ex";
+		/// <summary>
+		/// Urging
+		/// The next skill played from hand costs 3 less.
+		/// </summary>
+        public static string Buff_B_Angela_0 = "B_Angela_0";
 		/// <summary>
 		/// Happy Memories
 		/// Skills in hand cost 1 less.
@@ -39,7 +48,7 @@ namespace Angela
         public static string Buff_B_Angela_4 = "B_Angela_4";
 		/// <summary>
 		/// Vampirism
-		/// Heal for 20% of damage dealt.
+		/// Heal for 25% of damage dealt.
 		/// </summary>
         public static string Buff_B_Angela_6 = "B_Angela_6";
 		/// <summary>
@@ -87,7 +96,7 @@ namespace Angela
         public static string Buff_B_Angela_ChainedWrath = "B_Angela_ChainedWrath";
 		/// <summary>
 		/// Courage
-		/// Gain Attack Power +10% if all party members are alive. Attack Power -20% otherwise.
+		/// Gain Attack Power +15% if all party members are alive. Attack Power -33% otherwise.
 		/// </summary>
         public static string Buff_B_Angela_Courage = "B_Angela_Courage";
 		/// <summary>
@@ -117,6 +126,7 @@ namespace Angela
 		/// Gooey Waste
 		/// </summary>
         public static string Buff_B_Angela_GooeyWaste_0 = "B_Angela_GooeyWaste_0";
+        public static string Buff_B_Angela_Green1 = "B_Angela_Green1";
 		/// <summary>
 		/// Incomprehensible
 		/// </summary>
@@ -133,7 +143,7 @@ namespace Angela
         public static string Buff_B_Angela_Love = "B_Angela_Love";
 		/// <summary>
 		/// Loyalty
-		/// This character can no longer heal above 1HP.
+		/// This character can no longer heal above 20% HP.
 		/// </summary>
         public static string Buff_B_Angela_Loyalty = "B_Angela_Loyalty";
 		/// <summary>
@@ -154,9 +164,10 @@ namespace Angela
 		/// Shell
 		/// </summary>
         public static string Buff_B_Angela_Shell = "B_Angela_Shell";
+        public static string Buff_B_Angela_SmallFlutters = "B_Angela_SmallFlutters";
 		/// <summary>
 		/// Vengeance
-		/// Upon reaching death's door, gain 33% increased damage/healing on the next skill played from hand.
+		/// Upon reaching death's door, gain 20% increased damage/healing.
 		/// </summary>
         public static string Buff_B_Angela_Vengeance = "B_Angela_Vengeance";
         public static string SkillEffect_SE_S_S_Angela_9 = "SE_S_S_Angela_9";
@@ -175,9 +186,9 @@ namespace Angela
         public static string SkillEffect_SE_T_S_Angela_7 = "SE_T_S_Angela_7";
         public static string SkillEffect_SE_T_S_Angela_8 = "SE_T_S_Angela_8";
         public static string SkillEffect_SE_T_S_Angela_9 = "SE_T_S_Angela_9";
+        public static string SkillEffect_SE_T_S_Angela_9_0 = "SE_T_S_Angela_9_0";
 		/// <summary>
 		/// Urging
-		/// Restore 1 mana.
 		/// </summary>
         public static string Skill_S_Angela_0 = "S_Angela_0";
 		/// <summary>
@@ -205,13 +216,13 @@ namespace Angela
         public static string Skill_S_Angela_11 = "S_Angela_11";
 		/// <summary>
 		/// Coffin
-		/// When used on enemy, heal for double the value and stun.
+		/// When used on enemy, heal the enemy and stun. (<sprite=2> &a)
 		/// </summary>
         public static string Skill_S_Angela_2 = "S_Angela_2";
 		/// <summary>
 		/// Meal
 		/// Damage increases by 33% for each type of debuff on the target. (Pain, Weakening, CC)
-		/// Heal all allies for 50% of damage dealt.
+		/// Heal all allies for 100% of damage dealt.
 		/// </summary>
         public static string Skill_S_Angela_3 = "S_Angela_3";
 		/// <summary>
@@ -249,10 +260,17 @@ namespace Angela
         public static string Skill_S_Angela_8 = "S_Angela_8";
 		/// <summary>
 		/// Baptism
+		/// This skill can be used one more time during this turn.
 		/// When cast, all allies gain 1 'Baptism'.
 		/// When at 12 Baptism, gain -33% receiving damage and Black Fog immunity.
 		/// </summary>
         public static string Skill_S_Angela_9 = "S_Angela_9";
+		/// <summary>
+		/// Baptism
+		/// When cast, all allies gain 1 'Baptism'.
+		/// When at 12 Baptism, gain -33% receiving damage and Black Fog immunity.
+		/// </summary>
+        public static string Skill_S_Angela_9_0 = "S_Angela_9_0";
 		/// <summary>
 		/// Confession
 		/// All allies fully restore healing gauge. 
@@ -260,17 +278,17 @@ namespace Angela
         public static string Skill_S_Angela_Confession_0 = "S_Angela_Confession_0";
 		/// <summary>
 		/// <color=green>Small Flutters</color>
-		/// [Single Ally] Evade +9%. Upon a successful evade, restore 1 mana. (Activates once per turn)
+		/// [Single Ally] Evade +15%. Upon a successful evade, restore 1 mana. (Activates once per turn)
 		/// </summary>
         public static string Skill_S_Angela_Green1 = "S_Angela_Green1";
 		/// <summary>
 		/// <color=green>Ashes</color>
-		/// [Single Ally] Armor +5%. When hit, apply Burn on the attacker. (3 damage for 4 turns. Max 3 stacks)
+		/// [Single Ally] Armor +10%. When hit, apply Burn on the attacker. (3 damage for 4 turns. Max 3 stacks)
 		/// </summary>
         public static string Skill_S_Angela_Green2 = "S_Angela_Green2";
 		/// <summary>
 		/// <color=green>Love</color>
-		/// [Single Ally] Critical Chance +5%. On a critical hit, restore 1 health for all allies.
+		/// [Single Ally] Critical Chance +15%. On a critical hit, overheal 2 health for all allies.
 		/// </summary>
         public static string Skill_S_Angela_Green3 = "S_Angela_Green3";
 		/// <summary>
@@ -282,12 +300,12 @@ namespace Angela
         public static string Skill_S_Angela_Green4 = "S_Angela_Green4";
 		/// <summary>
 		/// <color=green>Incomprehensible</color>
-		/// [Single Ally] Debuff Success Rate +20%.
+		/// [Single Ally] Debuff Success Rate +30%.
 		/// </summary>
         public static string Skill_S_Angela_Green5 = "S_Angela_Green5";
 		/// <summary>
 		/// <color=green>Absorption</color>
-		/// [Single Ally] Receiving Healing +20%. 
+		/// [Single Ally] Receiving Healing +30%. 
 		/// Upon defeating an enemy, gain +10% Max HP for the rest of battle.
 		/// </summary>
         public static string Skill_S_Angela_Green6 = "S_Angela_Green6";
@@ -298,7 +316,7 @@ namespace Angela
         public static string Skill_S_Angela_Green7 = "S_Angela_Green7";
 		/// <summary>
 		/// <color=green>Gooey Waste</color>
-		/// [Single Ally] On hit, apply Critical Chance, Armor, Evade -3%. (3 turns, Max 3 stacks)
+		/// [Single Ally] On hit, apply Critical Chance, Armor, Evade -5% to all enemies. (3 turns, Max 3 stacks)
 		/// </summary>
         public static string Skill_S_Angela_Green8 = "S_Angela_Green8";
 		/// <summary>
@@ -310,6 +328,12 @@ namespace Angela
 		/// Or, restore 5 mana.
 		/// </summary>
         public static string Skill_S_Angela_Green9 = "S_Angela_Green9";
+        public static string Skill_S_Angela_Green_0 = "S_Angela_Green_0";
+		/// <summary>
+		/// Ruinous Library
+		/// Draw 3 skills. View 6 random abnormalities from any tier and choose 1 to obtain.
+		/// </summary>
+        public static string Skill_S_Angela_LucyDraw = "S_Angela_LucyDraw";
 		/// <summary>
 		/// Magic Trick
 		/// Choose - 
@@ -329,28 +353,28 @@ namespace Angela
         public static string Skill_S_Angela_MagicTrick_0_1 = "S_Angela_MagicTrick_0_1";
 		/// <summary>
 		/// <color=red>Lies</color>
-		/// [Single Ally] Accuracy +5%. At the start of turn, randomize the cost of all skills of this character to 0, 1, 2, or 3. (Not including fixed ability)
+		/// [Single Ally] Accuracy +15%. At the start of turn, randomize the cost of all skills of this character to 0, 1, 2, or 3. (Not including fixed ability)
 		/// </summary>
         public static string Skill_S_Angela_Red1 = "S_Angela_Red1";
 		/// <summary>
 		/// <color=red>Courage</color>
-		/// [Single Ally] Attack Power +10% if all party members are alive. Attack Power -20% otherwise.
+		/// [Single Ally] Attack Power +15% if all party members are alive. Attack Power -33% otherwise.
 		/// </summary>
         public static string Skill_S_Angela_Red2 = "S_Angela_Red2";
 		/// <summary>
 		/// <color=red>Vengeance</color>
-		/// [Single Ally] Receiving Critical Chance +100%, Armor Penetration +50%.
-		/// Upon reaching death's door, gain 33% increased damage/healing on the next skill played from hand. 
+		/// [Single Ally] Receiving Critical Chance +100%, Critical Damage +50%.
+		/// Upon reaching death's door, gain 20% increased damage/healing,
 		/// </summary>
         public static string Skill_S_Angela_Red3 = "S_Angela_Red3";
 		/// <summary>
 		/// <color=red>Fervent Beats</color>
-		/// [Single Ally] Gain Attack Power, Healing Power, Armor +50% for 1 turn. Dies when this buff expires.
+		/// [Single Ally] Gain Attack Power, Healing Power, Armor +40% for 2 turns. Dies when this buff expires.
 		/// </summary>
         public static string Skill_S_Angela_Red4 = "S_Angela_Red4";
 		/// <summary>
 		/// <color=red>Chained Wrath</color>
-		/// [Single Ally] Critical chance +70%. All skills of this character lose Swiftness.
+		/// [Single Ally] Critical chance +80%. All skills of this character lose Swiftness.
 		/// </summary>
         public static string Skill_S_Angela_Red5 = "S_Angela_Red5";
 		/// <summary>
@@ -371,7 +395,7 @@ namespace Angela
 		/// <summary>
 		/// <color=red>Loyalty</color>
 		/// [Single Ally] This character can no longer heal above 20% HP. 
-		/// All other allies gain Attack Power, Healing Power, Armor +15%.
+		/// All other allies gain Attack Power, Healing Power, Armor +20%.
 		/// </summary>
         public static string Skill_S_Angela_Red9 = "S_Angela_Red9";
 

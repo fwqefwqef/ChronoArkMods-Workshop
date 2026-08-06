@@ -12,6 +12,7 @@ namespace PurpleTear
 {
     public class P_PurpleTear : Passive_Char, IP_PlayerTurn, IP_SkillUse_User_After
     {
+        private const int StanceSkillsRequired = 4;
         public int skillsPlayedInStance;
         private bool stanceSelectionPending;
 
@@ -47,11 +48,16 @@ namespace PurpleTear
             {
                 this.skillsPlayedInStance++;
             }
-            if (this.skillsPlayedInStance >= 3)
+            if (this.skillsPlayedInStance >= StanceSkillsRequired)
             {
-                this.skillsPlayedInStance = 0;
-                this.StanceSelect();
+                this.ForceStanceChange();
             }
+        }
+
+        public void ForceStanceChange()
+        {
+            this.skillsPlayedInStance = 0;
+            this.StanceSelect();
         }
 
         public void StanceSelect()

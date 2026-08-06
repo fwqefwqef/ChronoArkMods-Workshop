@@ -13,12 +13,32 @@ using Random = System.Random;
 
 namespace Angela
 {
-    // Happy Memories
-    public class B_Angela_1 : Buff
+    // Urging
+    public class B_Angela_0 : Buff, IP_SkillUseHand_Team
     {
         public override void Init()
         {
             base.Init();
+            this.PlusStat.PlusMPUse.PlusMP_OnlyHand = -3;
+        }
+        public void SKillUseHand_Team(Skill skill)
+        {
+            if (skill.Master == this.BChar)
+            {
+                base.SelfDestroy();
+            }
+        }
+    }
+
+
+    // Happy Memories
+    public class B_Angela_1 : Buff, IP_SkillUse_User
+    {
+        public override void Init()
+        {
+            base.Init();
+            this.OnePassive = true;
+            this.isStackDestroy = true;
         }
 
         public override void FixedUpdate()
@@ -31,6 +51,11 @@ namespace Angela
                     skill.ExtendedAdd(Skill_Extended.DataToExtended("Angela_1_Ex"));
                 }
             }
+        }
+
+        public void SkillUse(Skill SkillD, List<BattleChar> Targets)
+        {
+            base.StackDestroy();
         }
     }
 
@@ -76,14 +101,14 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.def = -20f;
+            this.PlusStat.def = -25f;
         }
 
         public void AttackEffect(BattleChar hit, SkillParticle SP, int DMG, bool Cri)
         {
-            if (DMG != 0 && Misc.PerToNum((float)DMG, 20f) >= 1f)
+            if (DMG != 0 && Misc.PerToNum((float)DMG, 25f) >= 1f)
             {
-                this.BChar.Heal(this.BChar, Misc.PerToNum((float)DMG, 20f), false, false, null);
+                this.BChar.Heal(this.BChar, Misc.PerToNum((float)DMG, 25f), false, false, null);
             }
         }
     }
@@ -91,6 +116,7 @@ namespace Angela
     // Oblivion
     public class B_Angela_7 : Buff, IP_PlayerTurn
     {
+        int count = 0;
         public override void Init()
         {
             base.Init();
@@ -98,10 +124,14 @@ namespace Angela
             this.PlusPerStat.Damage = -40 * base.StackNum;
         }
 
-        public void Turn() // give mana then destroy
+        public void Turn() // change cost then destroy
         {
             int stacks = base.StackNum;
-            BattleSystem.instance.AllyTeam.AP += stacks;
+            BattleSystem.instance.AllyTeam.AP += 1 * stacks;
+            //foreach (Skill s in BattleSystem.instance.AllyTeam.Skills)
+            //{
+            //    s.APChange = -99;
+            //}
             base.SelfDestroy();
         }
     }
@@ -163,7 +193,7 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.hit = 5f;
+            this.PlusStat.hit = 15f;
 
             Random r = new Random();
 
@@ -229,7 +259,7 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusPerStat.Damage = 10;
+            this.PlusPerStat.Damage = 15;
         }
 
         public override void FixedUpdate()
@@ -237,38 +267,29 @@ namespace Angela
             base.FixedUpdate();
             if (this.BChar.MyTeam.Chars.Count == this.BChar.MyTeam.AliveChars.Count)
             {
-                this.PlusPerStat.Damage = 10;
+                this.PlusPerStat.Damage = 15;
             }
             else {
-                this.PlusPerStat.Damage = -20;
+                this.PlusPerStat.Damage = -33;
             }
         }
     }
 
-    public class B_Angela_Vengeance : Buff, IP_NearDeath, IP_SkillUseHand_Team
+    public class B_Angela_Vengeance : Buff
     {
         public bool flag = false;
         public override void Init()
         {
             base.Init();
             this.PlusStat.crihit = 100;
-            this.PlusStat.Penetration = 50f;
-        }
-
-        public void NearDeath(BattleAlly Ally)
-        {
-            if (Ally == this.BChar)
-            {
-                flag = true;
-            }
+            this.PlusStat.PlusCriDmg = 50;
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            if (flag)
+            if (this.BChar.HP < 0)
             {
-                Debug.Log("Flag");
                 foreach (Skill skill in this.BChar.MyTeam.Skills)
                 {
                     if (skill.Master == this.BChar && skill.ExtendedFind_DataName("Angela_Vengeance_Ex") == null)
@@ -279,18 +300,6 @@ namespace Angela
             }
             else
             {
-
-            }
-        }
-
-        public void SKillUseHand_Team(Skill skill)
-        {
-            if (skill.Master == this.BChar && skill.ExtendedFind_DataName("Angela_Vengeance_Ex") != null)
-            {
-                flag = false;
-                skill.ExtendedDelete("Angela_Vengeance_Ex");
-                
-                // Remove extends from hand
                 foreach (Skill s in this.BChar.MyTeam.Skills)
                 {
                     if (s.Master == this.BChar && s.ExtendedFind_DataName("Angela_Vengeance_Ex") != null)
@@ -307,18 +316,19 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusSkillPerFinal.Damage = 33;
-            this.PlusSkillPerFinal.Heal = 33;
+            this.PlusSkillPerFinal.Damage = 20;
+            this.PlusSkillPerFinal.Heal = 20;
         }
     }
 
+    // Small Flutters
     public class B_Angela_Flutters : Buff, IP_Dodge, IP_PlayerTurn
     {
         public bool flag = true;
         public override void Init()
         {
             base.Init();
-            this.PlusStat.dod = 8;
+            this.PlusStat.dod = 15;
         }
 
         public void Dodge(BattleChar Char, SkillParticle SP)
@@ -341,7 +351,7 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.def = 5f;
+            this.PlusStat.def = 10f;
         }
         public void Hit(SkillParticle SP, int Dmg, bool Cri)
         {
@@ -365,7 +375,7 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.cri = 5;
+            this.PlusStat.cri = 15;
         }
         public void AttackEffect(BattleChar hit, SkillParticle SP, int DMG, bool Cri)
         {
@@ -374,7 +384,7 @@ namespace Angela
                 // Full party 1 heal
                 foreach(BattleChar b in BattleSystem.instance.AllyTeam.Chars)
                 {
-                    b.Heal(b, 1, false, false, null);
+                    b.Heal(b, 2, false, false, null);
                 }
             }
         }
@@ -385,9 +395,9 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusPerStat.Damage = 50;
-            this.PlusPerStat.Heal = 50;
-            this.PlusStat.def = 50f;
+            this.PlusPerStat.Damage = 40;
+            this.PlusPerStat.Heal = 40;
+            this.PlusStat.def = 40f;
         }
 
         public override void SelfdestroyPlus()
@@ -401,7 +411,7 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.cri = 70f;
+            this.PlusStat.cri = 80f;
         }
         public override void FixedUpdate()
         {
@@ -481,9 +491,9 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.HIT_DEBUFF = 20f;
-            this.PlusStat.HIT_CC = 20f;
-            this.PlusStat.HIT_DOT = 20f;
+            this.PlusStat.HIT_DEBUFF = 30f;
+            this.PlusStat.HIT_CC = 30f;
+            this.PlusStat.HIT_DOT = 30f;
         }
     }
 
@@ -492,6 +502,7 @@ namespace Angela
         public override void Init()
         {
             base.Init();
+            this.OnePassive = true;
             this.PlusStat.HEALTaken = 20f;
         }
 
@@ -506,18 +517,9 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.DMGTaken = 100f;
-
             foreach (BattleChar b in BattleSystem.instance.AllyTeam.AliveChars)
             {
-                if (b.IsLucyC)
-                {
-
-                }
-                else
-                {
-                    b.BuffAdd("B_Angela_DarkFlame_0", this.BChar);
-                }
+                b.BuffAdd("B_Angela_DarkFlame_0", this.BChar);
             }
             foreach (BattleChar b in BattleSystem.instance.EnemyTeam.AliveChars)
             {
@@ -532,11 +534,16 @@ namespace Angela
         }
         public void EnemyAwake(BattleChar Enemy)
         {
-            if (!Enemy.BuffFind("B_Angela_DarkFlame_0", false))
-            {
-                Enemy.BuffAdd("B_Angela_DarkFlame_0", this.BChar, true, 0, false, -1, false);
-            }
+            Enemy.BuffAdd("B_Angela_DarkFlame_0", this.BChar, false, 0, false, -1, false);
+            Debug.Log("DarkFlame add");
         }
+        //public override void FixedUpdate()
+        //{
+        //    foreach (BattleChar b in BattleSystem.instance.EnemyTeam.AliveChars)
+        //    {
+        //        b.BuffAdd("B_Angela_DarkFlame_0", this.BChar);
+        //    }
+        //}
     }
 
     public class B_Angela_DarkFlame_0 : Buff
@@ -604,9 +611,9 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusPerStat.Damage = 15;
-            this.PlusPerStat.Heal = 15;
-            this.PlusStat.def = 15f;
+            this.PlusPerStat.Damage = 20;
+            this.PlusPerStat.Heal = 20;
+            this.PlusStat.def = 20f;
         }
     }
 
@@ -653,9 +660,9 @@ namespace Angela
         public override void Init()
         {
             base.Init();
-            this.PlusStat.cri = -3 * base.StackNum;
-            this.PlusStat.def = -3 * base.StackNum;
-            this.PlusStat.dod = -3 * base.StackNum;
+            this.PlusStat.cri = -5 * base.StackNum;
+            this.PlusStat.def = -5 * base.StackNum;
+            this.PlusStat.dod = -5 * base.StackNum;
         }
     }
 }

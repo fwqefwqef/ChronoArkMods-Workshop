@@ -3,12 +3,13 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <AssemblyName>PurpleTear08012026172546</AssemblyName>
+    <AssemblyName>PurpleTear08062026115718</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <ReferencePath>C:/Steam/steamapps/common/Chrono Ark/ChronoArk_Data/Managed</ReferencePath>
+    <ProjectGuid>{27E4EF0F-F696-A149-FB91-3C65F5A9561B}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility">
@@ -383,8 +384,7 @@
     <!-- Extra Reference Start-->
 <!-- Extra Reference End-->
   </ItemGroup>
-  
-                                                                                                                                                                                                    <!-- Compile ItemGroup Start-->
+                                            <!-- Compile ItemGroup Start-->
   <ItemGroup>
     <Compile Include="Buffs.cs" />
     <Compile Include="Passive.cs" />
@@ -392,10 +392,11 @@
     <Compile Include="PurpleTear_ModItemKeys.cs" />
     <Compile Include="PurpleTear_Plugin.cs" />
     <Compile Include="Skills.cs" />
-    <Compile Include="Buff\B_PurpleTear_P_Blunt.cs" />
-    <Compile Include="Buff\B_PurpleTear_P_Slash_Temp.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
   </ItemGroup>
   <!-- Compile ItemGroup End-->
+  <ItemGroup>
+    <Folder Include="Buff\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

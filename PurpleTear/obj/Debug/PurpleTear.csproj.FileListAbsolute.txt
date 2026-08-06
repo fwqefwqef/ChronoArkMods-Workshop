@@ -2,7 +2,7 @@ C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\bin\Debug\Syste
 C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear.csproj.AssemblyReference.cache
 C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear.csproj.CoreCompileInputs.cache
 C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear.csproj.Up2Date
-C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\bin\Debug\PurpleTear08012026171629.dll
-C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\bin\Debug\PurpleTear08012026171629.pdb
-C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear08012026171629.dll
-C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear08012026171629.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\bin\Debug\PurpleTear08062026115718.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\bin\Debug\PurpleTear08062026115718.pdb
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear08062026115718.dll
+C:\Steam\steamapps\common\Chrono Ark\Mod\Mod Projects\PurpleTear\obj\Debug\PurpleTear08062026115718.pdb
